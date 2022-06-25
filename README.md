@@ -1,7 +1,7 @@
 # ShingekiNoTracer
 A RayTracer
 
-![image](Images/spheres.gif)
+![spherical](Renders/spheres.gif)
 
 This program requires the [stb image writing library](https://github.com/nothings/stb)
 
