@@ -10,7 +10,8 @@
 
 #include <Utility/Stopwatch.h>
 #include <Utility/Utility.h>
-#include <Utility/stb_image_write.h>
+
+#include <stb_image_write.h>
 
 #include <Math/Vector3.h>
 

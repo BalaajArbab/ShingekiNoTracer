@@ -12,8 +12,8 @@ void RandomScene(HittableList& worldObjects);
 int main()
 {
 	// Image
-	constexpr double aspectRatio = 3.0 / 2.0;
-	constexpr int imageHeight = 200;
+	constexpr double aspectRatio = 16.0 / 9.0;
+	constexpr int imageHeight = 600;
 	constexpr int imageWidth = static_cast<int>(imageHeight * aspectRatio);
 	constexpr int samplesPerPixel = 100;
 	constexpr int maxDepth = 50;
@@ -39,6 +39,7 @@ int main()
 
 
 	// Camera
+
 	Point3 lookFrom{ 16, 3, 3 };
 	Point3 lookAt{ 0, 0, 0 };
 	Vector3 vUp{ 0, 1, 0 };
