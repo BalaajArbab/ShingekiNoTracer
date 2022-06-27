@@ -69,7 +69,6 @@ public:
 		return (fabs(m_v[0]) < epsilon && fabs(m_v[1]) < epsilon && fabs(m_v[2]) < epsilon);
 	}
 
-	
 };
 
 // Type aliases for Vector 3.

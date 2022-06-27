@@ -4,13 +4,20 @@
 
 #include <Renderer/Hittable.h>
 #include <Materials/Material.h>
+#include <Textures/Texture.h>
 
 
 class Lambertian : public Material
 {
 public:
-	Lambertian(const Colour& reflectance)
-		: m_reflectance{ reflectance }
+	Lambertian(const Colour& reflectanceTexture)
+		: m_reflectanceTexture{ make_shared<SolidColour>(reflectanceTexture) }
+	{
+
+	}
+
+	Lambertian(shared_ptr<Texture> reflectanceTexture)
+		: m_reflectanceTexture{ reflectanceTexture }
 	{
 
 	}
@@ -23,14 +30,14 @@ public:
 		if (scatterDirection.NearZero()) scatterDirection = record.Normal;
 
 		scattered = Ray{ record.Point, scatterDirection };
-		attenuation = m_reflectance;
+		attenuation = m_reflectanceTexture->Value(record.u, record.v, record.Point);
 
 		return true;
 	}
 
 
 private:
-	Colour m_reflectance;
+	shared_ptr<Texture> m_reflectanceTexture;
 
 };
 

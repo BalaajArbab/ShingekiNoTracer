@@ -1,6 +1,7 @@
 
 // Add ./Headers as an include directory.
 #include "Headers/ShingekiNoTracer.h"
+#include "Headers/ImageIO.h"
 
 // Forward Declarations.
 Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth);
@@ -14,7 +15,7 @@ int main()
 	constexpr double aspectRatio = 16.0 / 9.0;
 	constexpr int imageHeight = 600;
 	constexpr int imageWidth = static_cast<int>(imageHeight * aspectRatio);
-	constexpr int samplesPerPixel = 100;
+	constexpr int samplesPerPixel = 10;
 	constexpr int maxDepth = 50;
 
 	Image image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
@@ -22,7 +23,7 @@ int main()
 
 	// World / Camera
 	HittableList worldObjects;
-	Colour background{ 0.6, 0.3, 0.1 };
+	Colour background{ 0.1, 0.4, 0.9 };
 	
 
 	Point3 lookFrom{ 0, 0, 1 };
@@ -113,7 +114,7 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 	Vector3 unitDirection = r.Direction();
 
 	auto t = 0.5 * (unitDirection.Y() + 1);
-	return (1.0 - t) * Colour { 0.8, 0.5, 0.3 } + t * background;
+	return (1.0 - t) * Colour { 1.0, 1.0, 1.0 } + t * background;
 }
 
 void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background)

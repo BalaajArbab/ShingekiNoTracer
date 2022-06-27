@@ -15,6 +15,9 @@ struct HitRecord
 	bool FrontFace;
 	shared_ptr<Material> Material_ptr;
 
+	double u;
+	double v;
+
 	void SetFaceNormal(const Ray& r, const Vector3& outwardNormal)
 	{
 		FrontFace = DotProduct(r.Direction(), outwardNormal) < 0;

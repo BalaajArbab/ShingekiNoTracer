@@ -28,6 +28,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{33bacb49-a9cd-4484-b6e1-131acceba03a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{4c047fec-1d4d-4a5a-bc79-1ac565e0cd4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
@@ -90,6 +93,15 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Scenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Textures\Texture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Textures\CheckerTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\ImageIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,6 +23,7 @@
     <ClCompile Include="Scenes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Headers\ImageIO.h" />
     <ClInclude Include="Headers\Materials\Dielectric.h" />
     <ClInclude Include="Headers\Materials\Lambertian.h" />
     <ClInclude Include="Headers\Materials\Material.h" />
@@ -39,6 +40,8 @@
     <ClInclude Include="Headers\Scenes.h" />
     <ClInclude Include="Headers\Shapes\Sphere.h" />
     <ClInclude Include="Headers\ShingekiNoTracer.h" />
+    <ClInclude Include="Headers\Textures\CheckerTexture.h" />
+    <ClInclude Include="Headers\Textures\Texture.h" />
     <ClInclude Include="Headers\Utility\Stopwatch.h" />
     <ClInclude Include="Headers\Utility\Utility.h" />
   </ItemGroup>

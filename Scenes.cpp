@@ -5,6 +5,7 @@
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
 #include <Shapes/Sphere.h>
+#include <Textures/CheckerTexture.h>
 
 void RandomScene(HittableList& worldObjects)
 {
@@ -60,8 +61,8 @@ void RandomScene(HittableList& worldObjects)
 
 void Scene1(HittableList& worldObjects)
 {
-	auto materialGround = make_shared<Lambertian>(Colour(0.8, 0.8, 0.0));
-	auto materialCenter = make_shared<Lambertian>(Colour(0.9, 0.4, 0.0));
+	auto materialGround = make_shared<Lambertian>(make_shared<CheckerTexture>(Colour{ 0, 0, 0 }, Colour{ 1, 1, 1 }));
+	auto materialCenter = make_shared<Lambertian>(Colour{ 0.9, 0.4, 0.0 });
 	auto materialLeft = make_shared<Dielectric>(1.3);
 	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.1);
 

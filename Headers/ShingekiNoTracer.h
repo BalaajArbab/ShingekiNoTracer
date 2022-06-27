@@ -1,17 +1,12 @@
 #ifndef SHINGEKINOTRACER_H
 #define SHINGEKINOTRACER_H
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <iostream>
 #include <cstddef>
 #include <string>
 
 #include <Utility/Stopwatch.h>
 #include <Utility/Utility.h>
-
-#include <stb_image_write.h>
 
 #include <Math/Vector3.h>
 
@@ -27,6 +22,9 @@
 #include <Materials/Lambertian.h>
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
+
+#include <Textures/Texture.h>
+#include <Textures/CheckerTexture.h>
 
 #include <Scenes.h>
 
