@@ -23,6 +23,7 @@ public:
 	{}
 
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool BoundingBox(AABB& outBox) const override;
 
 };
 
@@ -56,6 +57,13 @@ inline bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& recor
 	auto outwardNormal = (record.Point - m_center) / m_radius;
 	record.SetFaceNormal(r, outwardNormal);
 
+
+	return true;
+}
+
+inline bool Sphere::BoundingBox(AABB& outBox) const
+{
+	outBox = AABB{ m_center - Vector3{ m_radius, m_radius, m_radius }, m_center + Vector3{ m_radius, m_radius, m_radius } };
 
 	return true;
 }

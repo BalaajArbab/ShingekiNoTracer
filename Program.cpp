@@ -1,13 +1,12 @@
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define _CRT_SECURE_NO_WARNINGS
 
 // Add ./Headers as an include directory.
-#include <ShingekiNoTracer.h>
+#include "Headers/ShingekiNoTracer.h"
 
 // Forward Declarations.
-Colour rayColour(const Ray& r, const Hittable& worldObjects, int depth);
-void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, HittableList worldObjects);
-void RandomScene(HittableList& worldObjects);
+Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth);
+void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background);
+
+int g_Count{ 0 };
 
 int main()
 {
@@ -21,40 +20,48 @@ int main()
 	Image image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 
 
-	//World
+	// World / Camera
 	HittableList worldObjects;
+	Colour background{ 0.6, 0.3, 0.1 };
+	
 
-	/*auto materialGround = make_shared<Lambertian>(Colour(0.8, 0.8, 0.0));
-	auto materialCenter = make_shared<Lambertian>(Colour(1.0, 0.0, 0.0));
-	auto materialLeft = make_shared<Dielectric>(1.5);
-	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.2);
+	Point3 lookFrom{ 0, 0, 1 };
+	Point3 lookAt{ 0, 0, 0 };
+	double vFOV = 90.0;
 
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, materialGround));
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5, materialCenter));
-	worldObjects.Add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), 0.5, materialLeft));
-	worldObjects.Add(make_shared<Sphere>(Point3(-1.0, 0.0, -1.0), -0.45, materialLeft));
-	worldObjects.Add(make_shared<Sphere>(Point3(1.0, 0.0, -1.0), 0.5, materialRight));*/
+	int scene = 1;
 
-	RandomScene(worldObjects);
+	switch (scene)
+	{
+	case 0: 
+		RandomScene(worldObjects);
+
+		lookFrom = Point3{ 13, 3, 10 };
+		lookAt = Point3{ 0, 0, -2 };
+		vFOV = 20.0;
+
+		break;
+	case 1:
+		Scene1(worldObjects);
+		break;
+	}
+
+	BVHNode bvhTree{ worldObjects };
 
 
 	// Camera
-
-	Point3 lookFrom{ 16, 3, 3 };
-	Point3 lookAt{ 0, 0, 0 };
 	Vector3 vUp{ 0, 1, 0 };
-	double vFOV = 20.0;
 
-	double aperture = 0.1;
+	double aperture = 0.01;
 	double distToFocusPlane = 100.0;
 
 	//double distToFocusPlane = (lookFrom - lookAt).Magnitude();
+
 	//Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, 0 };
 
 
 	// Render
-
-	std::int32_t frameCount = 60;
+	int frameCount = 1;
 	double angleIncrement = 360 / frameCount;
 
 	Stopwatch sw;
@@ -69,22 +76,24 @@ int main()
 
 		Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, angleIncrement * (frame - 1)};
 
-		Render(filename, image, camera, pixelBuffer, worldObjects);
+		Render(filename, image, camera, pixelBuffer, bvhTree, background);
 
 		pixelBuffer.Clear();
 	}
 
 	std::cout << "\nRender time: " << sw.Elapsed() << " seconds\n";
 	std::cout << image.ImageWidth << 'x' << image.ImageHeight << '\n';
+	std::cout << "g_Count: " << g_Count << '\n';
 
 	system("picture1.bmp");
 
-
 }
 
-Colour rayColour(const Ray& r, const Hittable& worldObjects, int depth)
+Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth)
 {
 	HitRecord record;
+
+	g_Count++; // function call count
 
 	if (depth <= 0) return Colour{};
 
@@ -95,19 +104,19 @@ Colour rayColour(const Ray& r, const Hittable& worldObjects, int depth)
 
 		if (record.Material_ptr->Scatter(r, record, attenuation, scattered))
 		{
-			return attenuation * rayColour(scattered, worldObjects, depth - 1);
+			return attenuation * rayColour(scattered, background, worldObjects, depth - 1);
 		}
 
 		return Colour{};
 	}
 
-	Vector3 unitDirection = UnitVector(r.Direction());
+	Vector3 unitDirection = r.Direction();
 
 	auto t = 0.5 * (unitDirection.Y() + 1);
-	return (1.0 - t) * Colour { 1.0, 1.0, 1.0 } + t * Colour{ 1.0, 0.5, 0.2 };
+	return (1.0 - t) * Colour { 0.8, 0.5, 0.3 } + t * background;
 }
 
-void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, HittableList worldObjects)
+void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background)
 {
 
 	for (int row{ image.ImageHeight - 1 }; row >= 0; --row)
@@ -125,7 +134,7 @@ void Render(const std::string& filename, const Image& image, const Camera& camer
 
 				Ray r{ camera.getRay(u, v) };
 
-				c += rayColour(r, worldObjects, image.MaxDepth);
+				c += rayColour(r, background, worldObjects, image.MaxDepth);
 			}
 
 			pixelBuffer.AddColour(c, image.SamplesPerPixel);
@@ -135,55 +144,4 @@ void Render(const std::string& filename, const Image& image, const Camera& camer
 	std::cout << "\nimage write for " << filename << ": " << stbi_write_bmp(filename.data(), image.ImageWidth, image.ImageHeight, 3, pixelBuffer.Data()) << '\n' << '\n';
 }
 
-void RandomScene(HittableList& worldObjects)
-{
-	auto groundMaterial = make_shared<Lambertian>(Colour{ 0.9, 0.5, 0.5 });
-	worldObjects.Add(make_shared<Sphere>(Point3{ 0, -1000, 0 }, 1000, groundMaterial));
-
-	auto dielectricMat = make_shared <Dielectric>(1.5);
-
-	for (int a = -11; a < 11; a += 2)
-	{
-		for (int b = -11; b < 11; b += 2)
-		{
-			auto chooseMaterial = RandomDouble();
-
-			Point3 center{ a + 0.9 * RandomDouble(), 0.2, b + 0.9 * RandomDouble() };
-
-			if ((center - Point3(4, 0.2, 0)).Magnitude() > 0.9)
-			{
-				shared_ptr<Material> sphereMaterial;
-
-				if (chooseMaterial < 0.8)
-				{
-					// Diffuse
-					Colour colour = RandomVector3() * RandomVector3() - Colour{ -0.3, 0, 0.7 };
-					sphereMaterial = make_shared<Lambertian>(colour);
-					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
-				}
-				else if (chooseMaterial < 0.95)
-				{
-					// Metal
-					Colour colour = RandomVector3(0.5, 1) - Colour{ -0.3, 0, 0.7 };
-					double fuzz = RandomDouble(0, 0.5);
-					sphereMaterial = make_shared<Metal>(colour, fuzz);
-					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
-				}
-				else
-				{
-					worldObjects.Add(make_shared<Sphere>(center, 0.2, dielectricMat));
-				}
-			}
-		}
-	}
-
-	worldObjects.Add(make_shared<Sphere>(Point3{ 0, 1, 0 }, 1.0, dielectricMat));
-
-	auto lambertianMat = make_shared<Lambertian>(Colour{ 1.0, 0.4, 0.0 });
-	worldObjects.Add(make_shared<Sphere>(Point3{ -4, 1, 0 }, 1.0, lambertianMat));
-
-	auto metalMat = make_shared<Metal>(Colour{ 0.8, 0.6, 0.1 }, 0.0);
-	worldObjects.Add(make_shared<Sphere>(Point3{ 4, 1, 0 }, 1.0, metalMat));
-
-}
 

@@ -4,6 +4,7 @@
 #include <Math/Vector3.h>
 #include <Renderer/Ray.h>
 
+class AABB;
 class Material;
 
 struct HitRecord
@@ -26,7 +27,7 @@ class Hittable
 {
 public:
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const = 0;
-
+	virtual bool BoundingBox(AABB& outBox) const = 0;
 };
 
 #endif

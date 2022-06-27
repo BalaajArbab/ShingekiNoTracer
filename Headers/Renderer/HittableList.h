@@ -2,6 +2,7 @@
 #define HITTABLELIST_H
 
 #include <Renderer/Hittable.h>
+#include <Renderer/AABB.h>
 
 #include <memory>
 #include <vector>
@@ -29,7 +30,13 @@ public:
 		m_objects.resize(0);
 	}
 
+	const std::vector<shared_ptr<Hittable>>& GetList() const
+	{
+		return m_objects;
+	}
+
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool BoundingBox(AABB& outBox) const override;
 
 private:
 	std::vector<shared_ptr<Hittable>> m_objects;
@@ -58,6 +65,22 @@ inline bool HittableList::Hit(const Ray& r, double tMin, double tMax, HitRecord&
 	}
 
 	return hitAnything;
+}
+
+inline bool HittableList::BoundingBox(AABB& outBox) const
+{
+	if (m_objects.empty()) return false;
+
+	AABB tempBox;
+	bool firstBox = true;
+
+	for (auto object : m_objects)
+	{
+		if (!object->BoundingBox(tempBox)) return false;
+
+		outBox = firstBox ? tempBox : SurroundingBox(outBox, tempBox);
+		firstBox = false;
+	}
 }
 
 #endif

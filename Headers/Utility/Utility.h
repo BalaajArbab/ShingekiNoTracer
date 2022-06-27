@@ -44,6 +44,14 @@ inline double RandomDouble(double min, double max)
 	return dist(mt);
 }
 
+inline std::int32_t RandomInteger(std::int32_t min, std::int32_t max)
+{
+	static std::uniform_int_distribution dist{ min, max };
+	static std::mt19937 mt{ rd() };
+
+	return dist(mt);
+}
+
 template <typename T>
 inline T Clamp(T x, T min, T max)
 {
@@ -51,13 +59,6 @@ inline T Clamp(T x, T min, T max)
 	if (x > max) return max;
 	return x;
 }
-
-
-// Common Headers
-
-#include <Renderer/Ray.h>
-#include <Math/Vector3.h>
-
 
 
 #endif

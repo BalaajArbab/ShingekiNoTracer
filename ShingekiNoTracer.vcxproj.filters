@@ -13,56 +13,83 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{46b1a132-90b1-44a5-b002-6fa18a7aa748}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{0df94b7b-b3b7-4862-95a6-2529dfab6269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{1fea0a14-0bd0-4f49-ae05-25066c91f171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{2da67c72-831f-4c3a-b035-447b444f7b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{33bacb49-a9cd-4484-b6e1-131acceba03a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scenes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Headers\Materials\Dielectric.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Materials\Lambertian.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Materials\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Materials\Metal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Headers\Math\Vector3.h">
+    <ClInclude Include="Headers\ShingekiNoTracer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\Camera.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\Hittable.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\HittableList.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\Image.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\PixelBuffer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Renderer\Ray.h">
-      <Filter>Header Files</Filter>
+      <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\Shapes\Sphere.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Headers\Materials\Material.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Materials\Lambertian.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Materials\Dielectric.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Materials\Metal.h">
+      <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Utility\Stopwatch.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utility</Filter>
     </ClInclude>
     <ClInclude Include="Headers\Utility\Utility.h">
-      <Filter>Header Files</Filter>
+      <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="Headers\ShingekiNoTracer.h">
+    <ClInclude Include="Headers\Shapes\Sphere.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Renderer\AABB.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Renderer\BVHNode.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Scenes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

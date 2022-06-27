@@ -19,6 +19,7 @@
 #include <Renderer/HittableList.h>
 #include <Renderer/Camera.h>
 #include <Renderer/Image.h>
+#include <Renderer/BVHNode.h>
 
 #include <Shapes/Sphere.h>
 
@@ -26,5 +27,7 @@
 #include <Materials/Lambertian.h>
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
+
+#include <Scenes.h>
 
 #endif

@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="Scenes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Materials\Dielectric.h" />
@@ -27,12 +28,15 @@
     <ClInclude Include="Headers\Materials\Material.h" />
     <ClInclude Include="Headers\Materials\Metal.h" />
     <ClInclude Include="Headers\Math\Vector3.h" />
+    <ClInclude Include="Headers\Renderer\AABB.h" />
+    <ClInclude Include="Headers\Renderer\BVHNode.h" />
     <ClInclude Include="Headers\Renderer\Camera.h" />
     <ClInclude Include="Headers\Renderer\Hittable.h" />
     <ClInclude Include="Headers\Renderer\HittableList.h" />
     <ClInclude Include="Headers\Renderer\Image.h" />
     <ClInclude Include="Headers\Renderer\PixelBuffer.h" />
     <ClInclude Include="Headers\Renderer\Ray.h" />
+    <ClInclude Include="Headers\Scenes.h" />
     <ClInclude Include="Headers\Shapes\Sphere.h" />
     <ClInclude Include="Headers\ShingekiNoTracer.h" />
     <ClInclude Include="Headers\Utility\Stopwatch.h" />
