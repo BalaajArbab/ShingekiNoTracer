@@ -1,7 +1,7 @@
 
 // Add ./Headers as an include directory.
 #include "Headers/ShingekiNoTracer.h"
-#include "Headers/ImageIO.h"
+
 
 // Forward Declarations.
 Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth);
@@ -15,7 +15,7 @@ int main()
 	constexpr double aspectRatio = 16.0 / 9.0;
 	constexpr int imageHeight = 600;
 	constexpr int imageWidth = static_cast<int>(imageHeight * aspectRatio);
-	constexpr int samplesPerPixel = 10;
+	constexpr int samplesPerPixel = 1;
 	constexpr int maxDepth = 50;
 
 	Image image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
@@ -30,7 +30,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	int scene = 1;
+	int scene = 3;
 
 	switch (scene)
 	{
@@ -45,6 +45,24 @@ int main()
 	case 1:
 		Scene1(worldObjects);
 		break;
+	case 2:
+		Scene2(worldObjects);
+
+		lookFrom = Point3{ 13, 2, 3 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 40.0;
+
+		break;
+	case 3:
+		Zebra(worldObjects);
+
+		background = Colour{ 1, 1, 1 };
+
+		lookFrom = Point3{ 0, 0, 1 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 90.0;
+
+		break;
 	}
 
 	BVHNode bvhTree{ worldObjects };
@@ -54,7 +72,7 @@ int main()
 	Vector3 vUp{ 0, 1, 0 };
 
 	double aperture = 0.01;
-	double distToFocusPlane = 100.0;
+	double distToFocusPlane = 1000.0;
 
 	//double distToFocusPlane = (lookFrom - lookAt).Magnitude();
 
@@ -108,7 +126,7 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 			return attenuation * rayColour(scattered, background, worldObjects, depth - 1);
 		}
 
-		return Colour{};
+		return attenuation;
 	}
 
 	Vector3 unitDirection = r.Direction();

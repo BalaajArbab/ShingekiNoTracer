@@ -37,6 +37,8 @@ inline BVHNode::BVHNode(const std::vector<shared_ptr<Hittable>>& srcObjects, siz
 
 	size_t objectSpan = end - start;
 
+	//std::cout << "axis: " << axis << '\n';
+
 	if (objectSpan == 1)
 	{
 		m_leftChild = objects[start];

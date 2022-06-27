@@ -4,8 +4,11 @@
 #include <Materials/Lambertian.h>
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
+#include <Materials/Skybox.h>
 #include <Shapes/Sphere.h>
+#include <Shapes/AARects.h>
 #include <Textures/CheckerTexture.h>
+#include <Textures/ImageTexture.h>
 
 void RandomScene(HittableList& worldObjects)
 {
@@ -71,4 +74,81 @@ void Scene1(HittableList& worldObjects)
 	worldObjects.Add(make_shared<Sphere>(Point3(-1.3, 0.0, -1.0), 0.5, materialLeft));
 	//worldObjects.Add(make_shared<Sphere>(Point3(-1.8, 0.0, -1.0), -0.45, materialLeft));
 	worldObjects.Add(make_shared<Sphere>(Point3(1.3, 0.0, -1.0), 0.5, materialRight));
+}
+
+void Scene2(HittableList& worldObjects)
+{
+	auto materialGround = make_shared<Lambertian>((Colour{ 0.8, 0.4, 0 }));
+
+	auto earthImage = make_shared<ImageTexture>("earthmap.jpg");
+	auto materialCenter = make_shared<Lambertian>(earthImage);
+
+	auto materialLeft = make_shared<Dielectric>(1.3);
+	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.0);
+
+	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, materialGround));
+	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, 0.0), 2.0, materialCenter));
+	//worldObjects.Add(make_shared<Sphere>(Point3(-1.3, 0.0, -1.0), 0.5, materialLeft));
+	worldObjects.Add(make_shared<Sphere>(Point3(-8.0, 0.0, -9.0), 2.0, materialRight));
+}
+
+void Zebra(HittableList& worldObjects)
+{
+	/*auto cloudFront = make_shared<ImageTexture>("yellowcloud_ft.jpg");
+	auto matFront = make_shared<Skybox>(cloudFront);
+	auto cloudBack = make_shared <ImageTexture>("yellowcloud_bk.jpg");
+	auto matBack = make_shared<Skybox>(cloudBack);
+
+	auto cloudLeft = make_shared<ImageTexture>("yellowcloud_lf.jpg");
+	auto matLeft = make_shared<Skybox>(cloudLeft);
+	auto cloudRight = make_shared<ImageTexture>("yellowcloud_rt.jpg");
+	auto matRight = make_shared<Skybox>(cloudRight);
+
+	auto cloudTop = make_shared<ImageTexture>("yellowcloud_up.jpg");
+	auto matTop = make_shared<Skybox>(cloudTop);
+	auto cloudBottom = make_shared<ImageTexture>("yellowcloud_dn.jpg");
+	auto matBottom = make_shared<Skybox>(cloudBottom);*/
+
+	auto cloudFront = make_shared<ImageTexture>("space.jpg");
+	auto matFront = make_shared<Skybox>(cloudFront);
+	auto cloudBack = make_shared <ImageTexture>("space.jpg");
+	auto matBack = make_shared<Skybox>(cloudBack);
+
+	auto cloudLeft = make_shared<ImageTexture>("space.jpg");
+	auto matLeft = make_shared<Skybox>(cloudLeft);
+	auto cloudRight = make_shared<ImageTexture>("space.jpg");
+	auto matRight = make_shared<Skybox>(cloudRight);
+
+	auto cloudTop = make_shared<ImageTexture>("space.jpg");
+	auto matTop = make_shared<Skybox>(cloudTop);
+	auto cloudBottom = make_shared<ImageTexture>("space.jpg");
+	auto matBottom = make_shared<Skybox>(cloudBottom);
+
+	auto xyRect1 = make_shared<XYRect>(-300, 300, -300, 300, -300, matFront);
+	auto xyRect2 = make_shared<XYRect>(-300, 300, -300, 300, 300, matBack);
+
+	auto yzRect1 = make_shared<YZRect>(-300, 300, -300, 300, -300, matLeft);
+	auto yzRect2 = make_shared<YZRect>(-300, 300, -300, 300, 300, matRight);
+
+	auto xzRect1 = make_shared<XZRect>(-300, 300, -300, 300, 300, matTop);
+	auto xzRect2 = make_shared<XZRect>(-300, 300, -300, 300, -300, matBottom);
+
+
+	worldObjects.Add(xyRect1);
+	worldObjects.Add(xyRect2);
+
+	worldObjects.Add(yzRect1);
+	worldObjects.Add(yzRect2);
+
+	worldObjects.Add(xzRect1);
+	worldObjects.Add(xzRect2);
+
+	auto materialRight = make_shared<Metal>(Colour(1.0, 1.0, 1.0), 0.0);
+	auto materialLeft = make_shared<Dielectric>(1.5);
+
+
+	worldObjects.Add(make_shared<Sphere>(Point3(2.5, 0.0, -5.0), 2.0, materialRight));
+
+	
+	worldObjects.Add(make_shared<Sphere>(Point3(-2.5, 0.0, -5.0), 2.0, materialLeft));
 }

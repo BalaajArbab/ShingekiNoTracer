@@ -56,6 +56,11 @@ inline std::ostream& operator<<(std::ostream& out, const AABB& aabb)
 
 inline bool AABB::Hit(const Ray& r, double tMin, double tMax) const
 {
+	/*if (m_minPoint.X() < r.Origin().X() < m_maxPoint.X()
+		&& m_minPoint.Y() < r.Origin().Y() < m_maxPoint.Y()
+		&& m_minPoint.Z() < r.Origin().Z() < m_maxPoint.Z())
+		return true;*/
+
 	for (int i = 0; i < 3; ++i)
 	{
 		double inverseDirection = 1.0 / r.Direction()[i];

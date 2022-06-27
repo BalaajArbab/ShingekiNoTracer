@@ -28,6 +28,7 @@
     <ClInclude Include="Headers\Materials\Lambertian.h" />
     <ClInclude Include="Headers\Materials\Material.h" />
     <ClInclude Include="Headers\Materials\Metal.h" />
+    <ClInclude Include="Headers\Materials\Skybox.h" />
     <ClInclude Include="Headers\Math\Vector3.h" />
     <ClInclude Include="Headers\Renderer\AABB.h" />
     <ClInclude Include="Headers\Renderer\BVHNode.h" />
@@ -39,8 +40,10 @@
     <ClInclude Include="Headers\Renderer\Ray.h" />
     <ClInclude Include="Headers\Scenes.h" />
     <ClInclude Include="Headers\Shapes\Sphere.h" />
+    <ClInclude Include="Headers\Shapes\AARects.h" />
     <ClInclude Include="Headers\ShingekiNoTracer.h" />
     <ClInclude Include="Headers\Textures\CheckerTexture.h" />
+    <ClInclude Include="Headers\Textures\ImageTexture.h" />
     <ClInclude Include="Headers\Textures\Texture.h" />
     <ClInclude Include="Headers\Utility\Stopwatch.h" />
     <ClInclude Include="Headers\Utility\Utility.h" />

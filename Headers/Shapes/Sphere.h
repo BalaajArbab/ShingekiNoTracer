@@ -80,8 +80,10 @@ inline void Sphere::GetSphereUV(const Point3& p, double& u, double& v)
 			//     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
 			//     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
 
-	auto theta = acos(-p.Y());
-	auto phi = atan2(-p.Z(), p.X());
+	auto p1 = UnitVector(p);
+
+	auto theta = acos(-p1.Y());
+	auto phi = atan2(-p1.Z(), p1.X()) + pi;
 
 	u = phi / (pi * 2);
 	v = theta / pi;

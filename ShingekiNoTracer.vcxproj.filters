@@ -104,6 +104,15 @@
     <ClInclude Include="Headers\ImageIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Textures\ImageTexture.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shapes\AARects.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Materials\Skybox.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

@@ -61,9 +61,9 @@ public:
         b *= scale;
 
         // Gamma2 Correction
-        r = sqrt(r);
+        /*r = sqrt(r);
         g = sqrt(g);
-        b = sqrt(b);
+        b = sqrt(b);*/
 
         r = 256 * Clamp(r, 0.0, 0.999);
         g = 256 * Clamp(g, 0.0, 0.999);

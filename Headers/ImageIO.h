@@ -7,10 +7,7 @@
     #pragma warning (push, 0)
 #endif
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #define _CRT_SECURE_NO_WARNINGS
-
-#include <stb_image_write.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 
