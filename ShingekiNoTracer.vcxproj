@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClInclude Include="Headers\ImageIO.h" />
     <ClInclude Include="Headers\Materials\Dielectric.h" />
+    <ClInclude Include="Headers\Materials\DiffuseLight.h" />
     <ClInclude Include="Headers\Materials\Lambertian.h" />
     <ClInclude Include="Headers\Materials\Material.h" />
     <ClInclude Include="Headers\Materials\Metal.h" />

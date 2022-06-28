@@ -5,6 +5,7 @@
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
 #include <Materials/Skybox.h>
+#include <Materials/DiffuseLight.h>
 #include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
 #include <Textures/CheckerTexture.h>
@@ -80,14 +81,14 @@ void Scene2(HittableList& worldObjects)
 {
 	auto materialGround = make_shared<Lambertian>((Colour{ 0.8, 0.4, 0 }));
 
-	auto earthImage = make_shared<ImageTexture>("earthmap.jpg");
+	auto earthImage = make_shared<ImageTexture>("earth.jpg");
 	auto materialCenter = make_shared<Lambertian>(earthImage);
 
 	auto materialLeft = make_shared<Dielectric>(1.3);
 	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.0);
 
 	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, materialGround));
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, 0.0), 2.0, materialCenter));
+	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, 0.0), 3.0, materialCenter));
 	//worldObjects.Add(make_shared<Sphere>(Point3(-1.3, 0.0, -1.0), 0.5, materialLeft));
 	worldObjects.Add(make_shared<Sphere>(Point3(-8.0, 0.0, -9.0), 2.0, materialRight));
 }
@@ -108,6 +109,8 @@ void Zebra(HittableList& worldObjects)
 	auto matTop = make_shared<Skybox>(cloudTop);
 	auto cloudBottom = make_shared<ImageTexture>("yellowcloud_dn.jpg");
 	auto matBottom = make_shared<Skybox>(cloudBottom);*/
+
+	auto skyboxObjects = make_shared<HittableList>();
 
 	auto cloudFront = make_shared<ImageTexture>("space.jpg");
 	auto matFront = make_shared<Skybox>(cloudFront);
@@ -134,14 +137,16 @@ void Zebra(HittableList& worldObjects)
 	auto xzRect2 = make_shared<XZRect>(-300, 300, -300, 300, -300, matBottom);
 
 
-	worldObjects.Add(xyRect1);
-	worldObjects.Add(xyRect2);
+	skyboxObjects->Add(xyRect1);
+	skyboxObjects->Add(xyRect2);
 
-	worldObjects.Add(yzRect1);
-	worldObjects.Add(yzRect2);
+	skyboxObjects->Add(yzRect1);
+	skyboxObjects->Add(yzRect2);
 
-	worldObjects.Add(xzRect1);
-	worldObjects.Add(xzRect2);
+	skyboxObjects->Add(xzRect1);
+	skyboxObjects->Add(xzRect2);
+
+	worldObjects.Add(skyboxObjects);
 
 	auto materialRight = make_shared<Metal>(Colour(1.0, 1.0, 1.0), 0.0);
 	auto materialLeft = make_shared<Dielectric>(1.5);
@@ -151,4 +156,24 @@ void Zebra(HittableList& worldObjects)
 
 	
 	worldObjects.Add(make_shared<Sphere>(Point3(-2.5, 0.0, -5.0), 2.0, materialLeft));
+}
+
+void Cornell(HittableList& worldObjects)
+{
+	auto cornellWalls = make_shared<HittableList>();
+
+	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
+	auto white = make_shared<Lambertian>(Colour{ 0.73, 0.73, 0.73 });
+	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
+	auto light = make_shared<DiffuseLight>(Colour{ 15, 15, 15 });
+
+	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 555, green));
+	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 0, red));
+	cornellWalls->Add(make_shared<XZRect>(213, 343, 227, 332, 554, light));
+	cornellWalls->Add(make_shared<XZRect>(0, 555, 0, 555, 0, white));
+	cornellWalls->Add(make_shared<XZRect>(0, 555, 0, 555, 555, white));
+	cornellWalls->Add(make_shared<XYRect>(0, 555, 0, 555, 555, white));
+
+
+	worldObjects.Add(cornellWalls);
 }

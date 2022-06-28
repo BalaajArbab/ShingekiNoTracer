@@ -24,9 +24,12 @@ public:
 
 	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered) const override
 	{
-		attenuation = m_reflectanceTexture->Value(record.u, record.v, record.Point);
-
 		return false;
+	}
+
+	virtual Colour Emitted(double u, double v, Point3& p) const override
+	{
+		return m_reflectanceTexture->Value(u, v, p);
 	}
 
 

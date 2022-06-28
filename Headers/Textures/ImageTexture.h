@@ -17,12 +17,13 @@ public:
 	const static byte bytesPerPixel = 3;
 
 	ImageTexture()
-		: m_data{ nullptr }, m_width{ 0 }, m_height{ 0 }, m_bytesPerScanline{ 0 }
+		: m_data{ nullptr }, m_width{ 0 }, m_height{ 0 }, m_bytesPerScanline{ 0 }, m_unGammaCorrect{ true }
 	{
 
 	}
 
-	ImageTexture(const char* filename)
+	ImageTexture(const char* filename, bool unGamma = true)
+		: m_unGammaCorrect{ unGamma }
 	{
 		int componentsPerPixel = bytesPerPixel;
 
@@ -51,6 +52,7 @@ private:
 	int m_width;
 	int m_height;
 	int m_bytesPerScanline;
+	bool m_unGammaCorrect;
 
 };
 
@@ -77,7 +79,19 @@ inline Colour ImageTexture::Value(double u, double v, const Point3& p) const
 
 	byte* pixel = m_data + (xOfImage * bytesPerPixel) + (yOfImage * m_bytesPerScanline);
 
-	return Colour{ colourScale * pixel[0], colourScale * pixel[1], colourScale * pixel[2] };
+	double r = colourScale * pixel[0];
+	double g = colourScale * pixel[1];
+	double b = colourScale * pixel[2];
+
+	if (m_unGammaCorrect)
+	{
+		r = r * r;
+		g = g * g;
+		b = b * b;
+	}
+
+
+	return Colour{ r, g, b };
 }
 
 #endif

@@ -113,6 +113,9 @@
     <ClInclude Include="Headers\Materials\Skybox.h">
       <Filter>Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Materials\DiffuseLight.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

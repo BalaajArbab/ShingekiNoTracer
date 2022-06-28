@@ -12,11 +12,11 @@ int g_Count{ 0 };
 int main()
 {
 	// Image
-	constexpr double aspectRatio = 16.0 / 9.0;
-	constexpr int imageHeight = 600;
-	constexpr int imageWidth = static_cast<int>(imageHeight * aspectRatio);
-	constexpr int samplesPerPixel = 1;
-	constexpr int maxDepth = 50;
+	double aspectRatio = 16.0 / 9.0;
+	int imageHeight = 600;
+	int imageWidth = static_cast<int>(imageHeight * aspectRatio);
+	int samplesPerPixel = 100;
+	int maxDepth = 50;
 
 	Image image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 
@@ -30,7 +30,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	int scene = 3;
+	const int scene = 4;
 
 	switch (scene)
 	{
@@ -48,6 +48,8 @@ int main()
 	case 2:
 		Scene2(worldObjects);
 
+		background = Colour{ 1, 1, 1 };
+
 		lookFrom = Point3{ 13, 2, 3 };
 		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 40.0;
@@ -61,6 +63,22 @@ int main()
 		lookFrom = Point3{ 0, 0, 1 };
 		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 90.0;
+
+		break;
+	case 4:
+		Cornell(worldObjects);
+
+		aspectRatio = 1.0;
+		imageHeight = 600;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 200;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+
+		background = Colour{ 0, 0, 0 };
+
+		lookFrom = Point3{ 278, 278, -800 };
+		lookAt = Point3{ 278, 278, 0 };
+		vFOV = 40.0;
 
 		break;
 	}
@@ -116,23 +134,23 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 
 	if (depth <= 0) return Colour{};
 
-	if (worldObjects.Hit(r, 0.001, infinity, record)) // worldObjects : HittableList .Hit returns the record with lowest t value, hence closest intersection and thus the one we want to display.
+	// If the ray hits no object in the world, return background colour.
+	if (!worldObjects.Hit(r, 0.001, infinity, record))
 	{
-		Ray scattered;
-		Colour attenuation;
-
-		if (record.Material_ptr->Scatter(r, record, attenuation, scattered))
-		{
-			return attenuation * rayColour(scattered, background, worldObjects, depth - 1);
-		}
-
-		return attenuation;
+		return background;
 	}
 
-	Vector3 unitDirection = r.Direction();
+	// If the ray does hit something in the world.
+	Ray scattered;
+	Colour attenuation;
+	Colour emitted = record.Material_ptr->Emitted(record.u, record.v, record.Point);
 
-	auto t = 0.5 * (unitDirection.Y() + 1);
-	return (1.0 - t) * Colour { 1.0, 1.0, 1.0 } + t * background;
+	if (!record.Material_ptr->Scatter(r, record, attenuation, scattered))
+	{
+		return emitted;
+	}
+
+	return emitted + attenuation * rayColour(scattered, background, worldObjects, depth - 1);
 }
 
 void Render(const std::string& filename, const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background)
