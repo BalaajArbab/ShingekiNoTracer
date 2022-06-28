@@ -24,6 +24,7 @@
 #include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
 #include <Shapes/Box.h>
+#include <Shapes/Cylinder.h>
 #include <Shapes/Translate.h>
 #include <Shapes/Rotations.h>
 

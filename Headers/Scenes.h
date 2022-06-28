@@ -8,6 +8,6 @@ void Scene1(HittableList& worldObjects);
 void Scene2(HittableList& worldObjects);
 void Zebra(HittableList& worldObjects);
 void Cornell(HittableList& worldObjects);
-void Cylinder(HittableList& worldObjects);
+void CylinderTest(HittableList& worldObjects);
 
 #endif

@@ -9,6 +9,7 @@
 #include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
 #include <Shapes/Box.h>
+#include <Shapes/Cylinder.h>
 #include <Shapes/Translate.h>
 #include <Shapes/Rotations.h>
 #include <Textures/CheckerTexture.h>
@@ -192,7 +193,16 @@ void Cornell(HittableList& worldObjects)
 	worldObjects.Add(box2);
 }
 
-void Cylinder(HittableList& worldObjects)
+void CylinderTest(HittableList& worldObjects)
 {
+	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
 
+
+	auto cylinder = make_shared<Cylinder>(-5, -2, 5, red);
+	auto cylinder2 = make_shared<Cylinder>(0, 3, 5, red);
+
+	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, 5.0, 0.0), 1.0, red));
+
+	worldObjects.Add(cylinder);
+	//worldObjects.Add(cylinder2);
 }

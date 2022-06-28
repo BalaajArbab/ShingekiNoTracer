@@ -82,7 +82,16 @@ int main()
 
 		break;
 	case 5:
-		Cylinder(worldObjects);
+		CylinderTest(worldObjects);
+
+		lookFrom = Point3{ 0, 0, 2 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 90.0;
+
+		samplesPerPixel = 100;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+
+		background = Colour{ 1, 1, 1 };
 
 		break;
 	}
@@ -146,7 +155,7 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 
 	// If the ray does hit something in the world.
 	Ray scattered;
-	Colour attenuation;
+	Colour attenuation{ 0, 0, 0 };
 	Colour emitted = record.Material_ptr->Emitted(record.u, record.v, record.Point);
 
 	if (!record.Material_ptr->Scatter(r, record, attenuation, scattered))
@@ -166,7 +175,7 @@ void Render(const std::string& filename, const Image& image, const Camera& camer
 
 		for (int column{}; column < image.ImageWidth; ++column)
 		{
-			Colour c;
+			Colour c{ 0, 0, 0 };
 
 			for (int s{}; s < image.SamplesPerPixel; s++)
 			{

@@ -41,6 +41,7 @@
     <ClInclude Include="Headers\Renderer\Ray.h" />
     <ClInclude Include="Headers\Scenes.h" />
     <ClInclude Include="Headers\Shapes\Box.h" />
+    <ClInclude Include="Headers\Shapes\Cylinder.h" />
     <ClInclude Include="Headers\Shapes\Rotations.h" />
     <ClInclude Include="Headers\Shapes\Translate.h" />
     <ClInclude Include="Headers\Shapes\Sphere.h" />
