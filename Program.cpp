@@ -30,7 +30,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 5;
+	const int scene = 6;
 
 	switch (scene)
 	{
@@ -60,8 +60,8 @@ int main()
 
 		background = Colour{ 1, 1, 1 };
 
-		lookFrom = Point3{ 0, 0, 1 };
-		lookAt = Point3{ 0, 0, 0 };
+		lookFrom = Point3{ 0, 50, 100 };
+		lookAt = Point3{ 0, 50, 0 };
 		vFOV = 90.0;
 
 		break;
@@ -71,7 +71,7 @@ int main()
 		aspectRatio = 1.0;
 		imageHeight = 600;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 200;
+		samplesPerPixel = 20;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 
 		background = Colour{ 0, 0, 0 };
@@ -84,14 +84,27 @@ int main()
 	case 5:
 		CylinderTest(worldObjects);
 
-		lookFrom = Point3{ 0, 0, 2 };
+		lookFrom = Point3{ -30, 80, 100 };
 		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 90.0;
 
-		samplesPerPixel = 100;
+		samplesPerPixel = 10;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 
-		background = Colour{ 1, 1, 1 };
+		background = Colour{ 0.1, 0.1, 0.1 };
+
+		break;
+	case 6:
+		Sandbox(worldObjects);
+
+		lookFrom = Point3{ -30, 80, 100 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 90.0;
+
+		samplesPerPixel = 20;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+
+		background = Colour{ 0.1, 0.1, 0.1 };
 
 		break;
 	}

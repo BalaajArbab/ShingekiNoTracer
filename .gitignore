@@ -5,6 +5,7 @@
 
 picture*.bmp
 /*.jpg
+/*.png
 
 # User-specific files
 *.rsuser

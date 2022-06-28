@@ -99,7 +99,7 @@ void Scene2(HittableList& worldObjects)
 
 void Zebra(HittableList& worldObjects)
 {
-	/*auto cloudFront = make_shared<ImageTexture>("yellowcloud_ft.jpg");
+	auto cloudFront = make_shared<ImageTexture>("yellowcloud_ft.jpg");
 	auto matFront = make_shared<Skybox>(cloudFront);
 	auto cloudBack = make_shared <ImageTexture>("yellowcloud_bk.jpg");
 	auto matBack = make_shared<Skybox>(cloudBack);
@@ -112,11 +112,11 @@ void Zebra(HittableList& worldObjects)
 	auto cloudTop = make_shared<ImageTexture>("yellowcloud_up.jpg");
 	auto matTop = make_shared<Skybox>(cloudTop);
 	auto cloudBottom = make_shared<ImageTexture>("yellowcloud_dn.jpg");
-	auto matBottom = make_shared<Skybox>(cloudBottom);*/
+	auto matBottom = make_shared<Skybox>(cloudBottom);
 
 	auto skyboxObjects = make_shared<HittableList>();
 
-	auto cloudFront = make_shared<ImageTexture>("space.jpg");
+	/*auto cloudFront = make_shared<ImageTexture>("space.jpg");
 	auto matFront = make_shared<Skybox>(cloudFront);
 	auto cloudBack = make_shared <ImageTexture>("space.jpg");
 	auto matBack = make_shared<Skybox>(cloudBack);
@@ -129,7 +129,7 @@ void Zebra(HittableList& worldObjects)
 	auto cloudTop = make_shared<ImageTexture>("space.jpg");
 	auto matTop = make_shared<Skybox>(cloudTop);
 	auto cloudBottom = make_shared<ImageTexture>("space.jpg");
-	auto matBottom = make_shared<Skybox>(cloudBottom);
+	auto matBottom = make_shared<Skybox>(cloudBottom);*/
 
 	auto xyRect1 = make_shared<XYRect>(-300, 300, -300, 300, -300, matFront);
 	auto xyRect2 = make_shared<XYRect>(-300, 300, -300, 300, 300, matBack);
@@ -155,11 +155,14 @@ void Zebra(HittableList& worldObjects)
 	auto materialRight = make_shared<Metal>(Colour(1.0, 1.0, 1.0), 0.0);
 	auto materialLeft = make_shared<Dielectric>(1.5);
 
+	shared_ptr<Hittable> cylinderBody = make_shared<Cylinder>(0, 40, 30, materialLeft);
 
-	worldObjects.Add(make_shared<Sphere>(Point3(2.5, 0.0, -5.0), 2.0, materialRight));
+	worldObjects.Add(cylinderBody);
+
+	/*worldObjects.Add(make_shared<Sphere>(Point3(2.5, 0.0, -5.0), 2.0, materialRight));
 
 	
-	worldObjects.Add(make_shared<Sphere>(Point3(-2.5, 0.0, -5.0), 2.0, materialLeft));
+	worldObjects.Add(make_shared<Sphere>(Point3(-2.5, 0.0, -5.0), 2.0, materialLeft));*/
 }
 
 void Cornell(HittableList& worldObjects)
@@ -196,13 +199,75 @@ void Cornell(HittableList& worldObjects)
 void CylinderTest(HittableList& worldObjects)
 {
 	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
+	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
+	auto light = make_shared<DiffuseLight>(Colour{ 15, 15, 15 });
+
+	shared_ptr<Hittable> cylinderBody = make_shared<Cylinder>(0, 80, 15, red);
+	cylinderBody = make_shared<RotateX>(cylinderBody, 90);
+	cylinderBody = make_shared<RotateZ>(cylinderBody, 90);
+	cylinderBody = make_shared<Translate>(cylinderBody, Vector3{ -40, 50, 0 });
+
+	shared_ptr<Hittable> cylinderLeg1 = make_shared<Cylinder>(0, 50, 5, red);
+	cylinderLeg1 = make_shared<RotateX>(cylinderLeg1, 90);
+	cylinderLeg1 = make_shared<Translate>(cylinderLeg1, Vector3{ -30, 30, 0 });
+
+	shared_ptr<Hittable> cylinderLeg2 = make_shared<Cylinder>(0, 50, 5, red);
+	cylinderLeg2 = make_shared<RotateY>(cylinderLeg2, 180);
+	//cylinderLeg2 = make_shared<Translate>(cylinderLeg2, Vector3{ 00, 50, 0 });
 
 
-	auto cylinder = make_shared<Cylinder>(-5, -2, 5, red);
-	auto cylinder2 = make_shared<Cylinder>(0, 3, 5, red);
+	shared_ptr<Hittable> box = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 40, 40, 40 }, green);
+	box = make_shared<Translate>(box, Vector3{ 50, 00, 0 });
 
-	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, 5.0, 0.0), 1.0, red));
+	shared_ptr<Hittable> box2 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 40, 40, 40 }, red);
+	box2 = make_shared<RotateY>(box2, 180);
+	box2 = make_shared<Translate>(box2, Vector3{ 50, 0, 0 });
+	
+	
+	
+	worldObjects.Add(make_shared<XZRect>(-40, 40, -40, 40, 70, light));
 
-	worldObjects.Add(cylinder);
-	//worldObjects.Add(cylinder2);
+	/*worldObjects.Add(cylinderBody);
+	worldObjects.Add(cylinderLeg1);*/
+	worldObjects.Add(cylinderLeg2);
+
+	worldObjects.Add(box);
+	worldObjects.Add(box2);
+
+	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, 55.0), 5.0, green));
+}
+
+void Sandbox(HittableList& worldObjects)
+{
+	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
+	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
+	auto light = make_shared<DiffuseLight>(Colour{ 15, 15, 15 });
+
+	shared_ptr<Hittable> cylinderBody = make_shared<Cylinder>(0, 80, 10, red);
+	cylinderBody = make_shared<RotateY>(cylinderBody, 90);
+	//cylinderBody = make_shared<Translate>(cylinderBody, Vector3{ -40, 50, 0 });
+
+	shared_ptr<Hittable> cylinderLeg1 = make_shared<Cylinder>(0, 50, 5, red);
+	cylinderLeg1 = make_shared<RotateX>(cylinderLeg1, 90);
+	cylinderLeg1 = make_shared<Translate>(cylinderLeg1, Vector3{ -30, 30, 0 });
+
+	shared_ptr<Hittable> cylinderLeg2 = make_shared<Cylinder>(0, 50, 5, red);
+	cylinderLeg2 = make_shared<RotateY>(cylinderLeg2, 180);
+	//cylinderLeg2 = make_shared<Translate>(cylinderLeg2, Vector3{ 00, 50, 0 });
+
+
+
+	shared_ptr<Hittable> box2 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 40, 40, 40 }, red);
+	box2 = make_shared<RotateY>(box2, 180);
+	box2 = make_shared<Translate>(box2, Vector3{ 50, 0, 0 });
+
+	worldObjects.Add(make_shared<XZRect>(-40, 40, -40, 40, 70, light));
+
+	worldObjects.Add(cylinderBody);
+	//worldObjects.Add(cylinderLeg1);
+	//worldObjects.Add(cylinderLeg2);
+
+	//worldObjects.Add(box);
+	//worldObjects.Add(box2);
+
 }

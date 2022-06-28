@@ -74,11 +74,11 @@ inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
 
-	origin[0] = m_cosTheta * origin[0] - m_sinTheta * origin[2];
-	origin[2] = m_sinTheta * origin[0] + m_cosTheta * origin[2];
+	origin[0] = m_cosTheta * r.Origin()[0] - m_sinTheta * r.Origin()[2];
+	origin[2] = m_sinTheta * r.Origin()[0] + m_cosTheta * r.Origin()[2];
 
-	direction[0] = m_cosTheta * direction[0] - m_sinTheta * direction[2];
-	direction[2] = m_sinTheta * direction[0] + m_cosTheta * direction[2];
+	direction[0] = m_cosTheta * r.Direction()[0] - m_sinTheta * r.Direction()[2];
+	direction[2] = m_sinTheta * r.Direction()[0] + m_cosTheta * r.Direction()[2];
 
 	Ray rotatedRay{ origin, direction };
 
@@ -87,15 +87,14 @@ inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
 
-	point[0] = m_cosTheta * point[0] + m_sinTheta * point[2];
-	point[2] = -m_sinTheta * point[0] + m_cosTheta * point[2];
+	point[0] = m_cosTheta * record.Point[0] + m_sinTheta * record.Point[2];
+	point[2] = -m_sinTheta * record.Point[0] + m_cosTheta * record.Point[2];
 
-	normal[0] = m_cosTheta * normal[0] + m_sinTheta * normal[2];
-	normal[2] = -m_sinTheta * normal[0] + m_cosTheta * normal[2];
+	normal[0] = m_cosTheta * record.Normal[0] + m_sinTheta * record.Normal[2];
+	normal[2] = -m_sinTheta * record.Normal[0] + m_cosTheta * record.Normal[2];
 
 	record.Point = point;
 	record.SetFaceNormal(rotatedRay, normal);
-
 
 	return true;
 }
@@ -170,11 +169,11 @@ inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
 
-	origin[1] = m_cosTheta * origin[1] + m_sinTheta * origin[2];
-	origin[2] = -m_sinTheta * origin[1] + m_cosTheta * origin[2];
+	origin[1] = m_cosTheta * r.Origin()[1] + m_sinTheta * r.Origin()[2];
+	origin[2] = -m_sinTheta * r.Origin()[1] + m_cosTheta * r.Origin()[2];
 
-	direction[1] = m_cosTheta * direction[1] + m_sinTheta * direction[2];
-	direction[2] = -m_sinTheta * direction[1] + m_cosTheta * direction[2];
+	direction[1] = m_cosTheta * r.Direction()[1] + m_sinTheta * r.Direction()[2];
+	direction[2] = -m_sinTheta * r.Direction()[1] + m_cosTheta * r.Direction()[2];
 
 	Ray rotatedRay{ origin, direction };
 
@@ -183,11 +182,11 @@ inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
 
-	point[1] = m_cosTheta * point[1] - m_sinTheta * point[2];
-	point[2] = m_sinTheta * point[1] + m_cosTheta * point[2];
+	point[1] = m_cosTheta * record.Point[1] - m_sinTheta * record.Point[2];
+	point[2] = m_sinTheta * record.Point[1] + m_cosTheta * record.Point[2];
 
-	normal[1] = m_cosTheta * normal[1] - m_sinTheta * normal[2];
-	normal[2] = m_sinTheta * normal[1] + m_cosTheta * normal[2];
+	normal[1] = m_cosTheta * record.Normal[1] - m_sinTheta * record.Normal[2];
+	normal[2] = m_sinTheta * record.Normal[1] + m_cosTheta * record.Normal[2];
 
 	record.Point = point;
 	record.SetFaceNormal(rotatedRay, normal);
@@ -266,11 +265,11 @@ inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
 
-	origin[0] = m_cosTheta * origin[0] + m_sinTheta * origin[1];
-	origin[1] = -m_sinTheta * origin[0] + m_cosTheta * origin[1];
+	origin[0] = m_cosTheta * r.Origin()[0] + m_sinTheta * r.Origin()[1];
+	origin[1] = -m_sinTheta * r.Origin()[0] + m_cosTheta * r.Origin()[1];
 
-	direction[0] = m_cosTheta * direction[0] + m_sinTheta * direction[1];
-	direction[1] = -m_sinTheta * direction[0] + m_cosTheta * direction[1];
+	direction[0] = m_cosTheta * r.Direction()[0] + m_sinTheta * r.Direction()[1];
+	direction[1] = -m_sinTheta * r.Direction()[0] + m_cosTheta * r.Direction()[1];
 
 	Ray rotatedRay{ origin, direction };
 
@@ -279,11 +278,11 @@ inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
 
-	point[0] = m_cosTheta * point[0] - m_sinTheta * point[1];
-	point[1] = m_sinTheta * point[0] + m_cosTheta * point[1];
+	point[0] = m_cosTheta * record.Point[0] - m_sinTheta * record.Point[1];
+	point[1] = m_sinTheta * record.Point[0] + m_cosTheta * record.Point[1];
 
-	normal[0] = m_cosTheta * normal[0] - m_sinTheta * normal[1];
-	normal[1] = m_sinTheta * normal[0] + m_cosTheta * normal[1];
+	normal[0] = m_cosTheta * record.Normal[0] - m_sinTheta * record.Normal[1];
+	normal[1] = m_sinTheta * record.Normal[0] + m_cosTheta * record.Normal[1];
 
 	record.Point = point;
 	record.SetFaceNormal(rotatedRay, normal);

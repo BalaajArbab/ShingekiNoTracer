@@ -18,7 +18,7 @@ public:
 
 	static void GetCylinderUV(const Point3& p, double& u, double& v);
 
-private:
+public:
 	Point3 m_center{ 0, 0, 0 };
 	double m_z0;
 	double m_z1;
