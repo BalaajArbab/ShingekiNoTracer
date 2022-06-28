@@ -30,7 +30,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 4;
+	const int scene = 5;
 
 	switch (scene)
 	{
@@ -79,6 +79,10 @@ int main()
 		lookFrom = Point3{ 278, 278, -800 };
 		lookAt = Point3{ 278, 278, 0 };
 		vFOV = 40.0;
+
+		break;
+	case 5:
+		Cylinder(worldObjects);
 
 		break;
 	}

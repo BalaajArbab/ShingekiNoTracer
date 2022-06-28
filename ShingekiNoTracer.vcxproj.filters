@@ -116,6 +116,15 @@
     <ClInclude Include="Headers\Materials\DiffuseLight.h">
       <Filter>Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Shapes\Box.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shapes\Translate.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Shapes\Rotations.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

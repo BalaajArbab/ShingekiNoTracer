@@ -81,6 +81,8 @@ inline bool HittableList::BoundingBox(AABB& outBox) const
 		outBox = firstBox ? tempBox : SurroundingBox(outBox, tempBox);
 		firstBox = false;
 	}
+
+	return true;
 }
 
 #endif

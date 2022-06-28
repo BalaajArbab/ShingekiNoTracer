@@ -40,6 +40,9 @@
     <ClInclude Include="Headers\Renderer\PixelBuffer.h" />
     <ClInclude Include="Headers\Renderer\Ray.h" />
     <ClInclude Include="Headers\Scenes.h" />
+    <ClInclude Include="Headers\Shapes\Box.h" />
+    <ClInclude Include="Headers\Shapes\Rotations.h" />
+    <ClInclude Include="Headers\Shapes\Translate.h" />
     <ClInclude Include="Headers\Shapes\Sphere.h" />
     <ClInclude Include="Headers\Shapes\AARects.h" />
     <ClInclude Include="Headers\ShingekiNoTracer.h" />

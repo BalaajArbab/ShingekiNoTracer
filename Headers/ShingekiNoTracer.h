@@ -23,6 +23,9 @@
 
 #include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
+#include <Shapes/Box.h>
+#include <Shapes/Translate.h>
+#include <Shapes/Rotations.h>
 
 #include <Materials/Material.h>
 #include <Materials/Lambertian.h>

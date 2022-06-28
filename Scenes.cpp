@@ -8,6 +8,9 @@
 #include <Materials/DiffuseLight.h>
 #include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
+#include <Shapes/Box.h>
+#include <Shapes/Translate.h>
+#include <Shapes/Rotations.h>
 #include <Textures/CheckerTexture.h>
 #include <Textures/ImageTexture.h>
 
@@ -169,11 +172,27 @@ void Cornell(HittableList& worldObjects)
 
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 555, green));
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 0, red));
-	cornellWalls->Add(make_shared<XZRect>(213, 343, 227, 332, 554, light));
+	cornellWalls->Add(make_shared<XZRect>(200, 400, 200, 360, 554, light));
 	cornellWalls->Add(make_shared<XZRect>(0, 555, 0, 555, 0, white));
 	cornellWalls->Add(make_shared<XZRect>(0, 555, 0, 555, 555, white));
 	cornellWalls->Add(make_shared<XYRect>(0, 555, 0, 555, 555, white));
 
-
 	worldObjects.Add(cornellWalls);
+
+	shared_ptr<Hittable> box1 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 330, 165 }, white);
+	box1 = make_shared<RotateY>(box1, 15);
+	box1 = make_shared<Translate>(box1, Vector3{ 265, 0, 295 });
+
+	shared_ptr<Hittable> box2 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 165, 165 }, white);
+	box2 = make_shared<RotateY>(box2, -18);
+	box2 = make_shared<Translate>(box2, Vector3{ 130, 0, 65 });
+
+
+	worldObjects.Add(box1);
+	worldObjects.Add(box2);
+}
+
+void Cylinder(HittableList& worldObjects)
+{
+
 }
