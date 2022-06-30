@@ -61,9 +61,9 @@ int main()
 		Zebra(worldObjects);
 
 		aspectRatio = 16.0 / 9.0;
-		imageHeight = 1080;
+		imageHeight = 600;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 100;
+		samplesPerPixel = 4;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
@@ -78,7 +78,7 @@ int main()
 		Cornell(worldObjects);
 
 		aspectRatio = 1.0;
-		imageHeight = 600;
+		imageHeight = 1000;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
 		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };

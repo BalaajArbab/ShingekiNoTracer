@@ -182,5 +182,9 @@ inline Vector3 RefractVector(const Vector3& incidentRay, const Vector3& normal, 
 	return rayOutPerpendicular + rayOutParallel;
 }
 
+inline Colour Clamp(const Colour& c)
+{
+	return Colour{ Clamp(c.X(), 0.0, 1.0), Clamp(c.Y(), 0.0, 1.0), Clamp(c.Z(), 0.0, 1.0) };
+}
 
 #endif

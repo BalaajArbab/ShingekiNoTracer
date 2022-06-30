@@ -18,6 +18,10 @@ public:
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
+	void SetMaterial(shared_ptr<Material> newMat)
+	{
+		m_materialPtr = newMat;
+	}
 
 private:
 	shared_ptr<Material> m_materialPtr;
@@ -76,6 +80,10 @@ public:
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
+	void SetMaterial(shared_ptr<Material> newMat)
+	{
+		m_materialPtr = newMat;
+	}
 
 private:
 	shared_ptr<Material> m_materialPtr;
@@ -133,6 +141,10 @@ public:
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
+	void SetMaterial(shared_ptr<Material> newMat)
+	{
+		m_materialPtr = newMat;
+	}
 
 private:
 	shared_ptr<Material> m_materialPtr;

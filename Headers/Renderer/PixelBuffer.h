@@ -12,9 +12,11 @@ class PixelBuffer
 {
 public:
     using byte = std::uint8_t;
+    using byte4 = double;
 
 private:
-    byte* m_rgbs;
+    byte4* m_rgbs;
+    byte* m_bytes{};
 
     int m_width;
     int m_height;
@@ -24,7 +26,7 @@ private:
 public:
     PixelBuffer() = default;
 
-    PixelBuffer(int width, int height) : m_rgbs{ new byte[width * height * 3] }, m_width{ width }, m_height{ height }
+    PixelBuffer(int width, int height) : m_rgbs{ new byte4[width * height * 3] }, m_width{ width }, m_height{ height }
     {
 
     }
@@ -32,6 +34,7 @@ public:
     ~PixelBuffer()
     {
         delete[] m_rgbs;
+        delete[] m_bytes;
     }
 
     PixelBuffer(const PixelBuffer& pb) = delete;
@@ -40,12 +43,12 @@ public:
 
     void InitializeBuffer(int width, int height)
     {
-        m_rgbs = new byte[width * height * 3]{};
+        m_rgbs = new byte4[width * height * 3]{};
         m_width = width;
         m_height = height;
     }
 
-    void AddRGBTriplet(byte r, byte g, byte b)
+    void AddRGBTriplet(byte4 r, byte4 g, byte4 b)
     {
         assert(m_count < (m_width * m_height));
 
@@ -70,11 +73,13 @@ public:
 
     void* Data()
     {
-        return m_rgbs;
+        return m_bytes;
     }
 
     void AveragePixelBuffers(PixelBuffer pbs[], int pbsN, int totalSamples)
     {
+        m_bytes = new byte[m_width * m_height * 3];
+
         for (int i = 0; i < pbsN; ++i)
         {
             for (int b = 0; b < m_width * m_height * 3; b += 3)
@@ -105,9 +110,9 @@ public:
             green = 256 * Clamp(green, 0.0, 0.999);
             blue = 256 * Clamp(blue, 0.0, 0.999);
 
-            m_rgbs[b + 0] = red;
-            m_rgbs[b + 1] = green;
-            m_rgbs[b + 2] = blue;
+            m_bytes[b + 0] = red;
+            m_bytes[b + 1] = green;
+            m_bytes[b + 2] = blue;
 
         }
 

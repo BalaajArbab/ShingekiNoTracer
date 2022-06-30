@@ -38,6 +38,7 @@ void RandomScene(HittableList& worldObjects)
 				{
 					// Diffuse
 					Colour colour = RandomVector3() * RandomVector3() - Colour{ -0.3, 0, 0.7 };
+					colour = Clamp(colour);
 					sphereMaterial = make_shared<Lambertian>(colour);
 					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
 				}
@@ -45,6 +46,7 @@ void RandomScene(HittableList& worldObjects)
 				{
 					// Metal
 					Colour colour = RandomVector3(0.5, 1) - Colour{ -0.3, 0, 0.7 };
+					colour = Clamp(colour);
 					double fuzz = RandomDouble(0, 0.5);
 					sphereMaterial = make_shared<Metal>(colour, fuzz);
 					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
@@ -276,7 +278,11 @@ void Cornell(HittableList& worldObjects)
 	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
 	auto white = make_shared<Lambertian>(Colour{ 0.73, 0.73, 0.73 });
 	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
-	auto light = make_shared<DiffuseLight>(Colour{ 20, 20, 20 });
+	auto light = make_shared<DiffuseLight>(Colour{ 3, 3, 3 });
+
+	auto dielectric = make_shared<Dielectric>(1.5);
+	auto mirror = make_shared<Metal>(Colour{ 1, 1, 1 }, 0.0);
+	auto mirror2 = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
 
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 555, green));
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 0, red));
@@ -287,17 +293,25 @@ void Cornell(HittableList& worldObjects)
 
 	worldObjects.Add(cornellWalls);
 
-	shared_ptr<Hittable> box1 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 330, 165 }, white);
+	shared_ptr<Hittable> box1 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 330, 165 }, white, std::bitset<6>{ 0b000001 }); // taller, left
 	box1 = make_shared<RotateY>(box1, 15);
 	box1 = make_shared<Translate>(box1, Vector3{ 265, 0, 295 });
 
-	shared_ptr<Hittable> box2 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 165, 165 }, white);
+	shared_ptr<Hittable> box2 = make_shared<Box>(Point3{ 0, 0, 0 }, Point3{ 165, 165, 165 }, white); // shorter, right
 	box2 = make_shared<RotateY>(box2, -18);
 	box2 = make_shared<Translate>(box2, Vector3{ 130, 0, 65 });
 
+	shared_ptr<Hittable> ball = make_shared<Sphere>(Point3{ 170, 80, 105 }, 80, mirror2);
+
+	auto clouds = make_shared<ImageTexture>("yellowcloud_bk.jpg");
+	auto matClouds = make_shared<Skybox>(clouds);
+	shared_ptr<Hittable> oppositeWall = make_shared<XYRect>(-5500, 6000, -5500, 6000, -801, matClouds);
 
 	worldObjects.Add(box1);
-	worldObjects.Add(box2);
+	//worldObjects.Add(box2);
+	worldObjects.Add(ball);
+
+	worldObjects.Add(oppositeWall);
 }
 
 void Sandbox(HittableList& worldObjects)
