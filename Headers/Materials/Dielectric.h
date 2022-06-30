@@ -13,7 +13,7 @@ public:
 
 	}
 
-	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered) const override
+	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered, int id) const override
 	{
 		attenuation = Colour{ 1.0, 1.0, 1.0 };
 		double refractionRatio = record.FrontFace ? (1.0 / m_iR) : m_iR;
@@ -26,7 +26,7 @@ public:
 
 		Vector3 direction;
 
-		if (cannotRefract || Reflectance(cosTheta, refractionRatio) > RandomDouble())
+		if (cannotRefract || Reflectance(cosTheta, refractionRatio) > RandomDouble(id))
 		{
 			direction = ReflectVector(unitDirection, record.Normal);
 		}

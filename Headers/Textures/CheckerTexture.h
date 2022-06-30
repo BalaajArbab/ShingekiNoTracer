@@ -22,7 +22,7 @@ public:
 
 	virtual Colour Value(double u, double v, const Point3& p) const override
 	{
-		auto sines = sin(10 * p.X()) * sin(10 * p.Y()) * sin(10 * p.Z());
+		auto sines = sin(1 * p.X()) * sin(1 * p.Y()) * sin(1 * p.Z());
 
 		if (sines < 0) return m_odd->Value(u, v, p);
 

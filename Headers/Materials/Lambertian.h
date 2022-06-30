@@ -22,9 +22,9 @@ public:
 
 	}
 
-	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered) const override
+	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered, int id) const override
 	{
-		Vector3 scatterDirection = record.Normal + RandomUnitVector3();
+		Vector3 scatterDirection = record.Normal + RandomUnitVector3(id);
 
 		// Catch degenerate scatter direction (random unit vector is opposite the normal hence results in a zero direction vector)((which is bad))
 		if (scatterDirection.NearZero()) scatterDirection = record.Normal;

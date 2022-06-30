@@ -31,6 +31,7 @@
     <ClInclude Include="Headers\Materials\Metal.h" />
     <ClInclude Include="Headers\Materials\Skybox.h" />
     <ClInclude Include="Headers\Math\Vector3.h" />
+    <ClInclude Include="Headers\Parallel.h" />
     <ClInclude Include="Headers\Renderer\AABB.h" />
     <ClInclude Include="Headers\Renderer\BVHNode.h" />
     <ClInclude Include="Headers\Renderer\Camera.h" />

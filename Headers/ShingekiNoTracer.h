@@ -39,4 +39,8 @@
 
 #include <Scenes.h>
 
+#include <Parallel.h>
+#include <thread>
+#include <mutex>
+
 #endif

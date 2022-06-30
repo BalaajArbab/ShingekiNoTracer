@@ -5,6 +5,7 @@
 #include <limits>
 #include <memory>
 #include <random>
+#include <Parallel.h>
 
 // Usings
 
@@ -28,28 +29,25 @@ inline double DegreesToRadians(double degrees)
 	return (pi * degrees) / 180.0;
 }
 
-inline double RandomDouble()
+inline double RandomDouble(int id = 0)
 {
-	static std::uniform_real_distribution dist{ 0.0, 1.0 };
-	static std::mt19937 mt{ rd() };
+	thread_local std::uniform_real_distribution dist{ 0.0, 1.0 };
 
-	return dist(mt);
+	return dist(g_RNGS[id]);
 }
 
-inline double RandomDouble(double min, double max)
+inline double RandomDouble(double min, double max, int id = 0)
 {
-	static std::uniform_real_distribution dist{ min, max };
-	static std::mt19937 mt{ rd() };
+	std::uniform_real_distribution dist{ min, max };
 
-	return dist(mt);
+	return dist(g_RNGS[id]);
 }
 
-inline std::int32_t RandomInteger(std::int32_t min, std::int32_t max)
+inline std::int32_t RandomInteger(std::int32_t min, std::int32_t max, int id = 0)
 {
-	static std::uniform_int_distribution dist{ min, max };
-	static std::mt19937 mt{ rd() };
+	std::uniform_int_distribution dist{ min, max };
 
-	return dist(mt);
+	return dist(g_RNGS[id]);
 }
 
 template <typename T>

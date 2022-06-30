@@ -13,11 +13,11 @@ public:
 
 	}
 
-	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered) const override
+	virtual bool Scatter(const Ray& rayIn, const HitRecord& record, Colour& attenuation, Ray& scattered, int id) const override
 	{
 		Vector3 reflectDirection = ReflectVector(UnitVector(rayIn.Direction()), record.Normal);
 
-		scattered = Ray{ record.Point, reflectDirection + m_fuzz * RandomVector3InUnitSphere() };
+		scattered = Ray{ record.Point, reflectDirection + m_fuzz * RandomVector3InUnitSphere(id) };
 		attenuation = m_reflectance;
 
 		return DotProduct(record.Normal, reflectDirection) > 0;

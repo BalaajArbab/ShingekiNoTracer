@@ -132,36 +132,36 @@ inline Vector3 UnitVector(const Vector3& v)
 	return v / v.Magnitude();
 }
 
-inline Vector3 RandomVector3()
+inline Vector3 RandomVector3(int id = 0)
 {
-	return Vector3{ RandomDouble(), RandomDouble(), RandomDouble() };
+	return Vector3{ RandomDouble(id), RandomDouble(id), RandomDouble(id) };
 }
 
-inline Vector3 RandomVector3(double min, double max)
+inline Vector3 RandomVector3(double min, double max, int id = 0)
 {
-	return Vector3{ RandomDouble(min, max), RandomDouble(min, max), RandomDouble(min, max) };
+	return Vector3{ RandomDouble(min, max, id), RandomDouble(min, max, id), RandomDouble(min, max, id) };
 }
 
-inline Vector3 RandomVector3InUnitSphere()
+inline Vector3 RandomVector3InUnitSphere(int id = 0)
 {
 	while (true)
 	{
-		Vector3 p{ RandomVector3(-1, 1) };
+		Vector3 p{ RandomVector3(-1, 1, id) };
 		if (p.MagnitudeSquared() >= 1) continue;
 		return p;
 	}
 }
 
-inline Vector3 RandomUnitVector3()
+inline Vector3 RandomUnitVector3(int id = 0)
 {
-	return UnitVector(RandomVector3InUnitSphere());
+	return UnitVector(RandomVector3InUnitSphere(id));
 }
 
-inline Vector3 RandomVector3InUnitDisk()
+inline Vector3 RandomVector3InUnitDisk(int id = 0)
 {
 	while (true)
 	{
-		Vector3 p = Vector3{ RandomDouble(-1, 1), RandomDouble(-1, 1), 0 };
+		Vector3 p = Vector3{ RandomDouble(-1, 1, id), RandomDouble(-1, 1, id), 0 };
 		if (p.MagnitudeSquared() >= 1) continue;
 		return p;
 	}
