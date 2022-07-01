@@ -80,7 +80,7 @@ int main()
 		aspectRatio = 1.0;
 		imageHeight = 1000;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 1000;
+		samplesPerPixel = 100;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();	
 
