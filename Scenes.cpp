@@ -282,7 +282,7 @@ void Cornell(HittableList& worldObjects)
 
 	auto dielectric = make_shared<Dielectric>(1.5);
 	auto mirror = make_shared<Metal>(Colour{ 1, 1, 1 }, 0.0);
-	auto mirror2 = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
+	auto mirror2 = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.2);
 
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 555, green));
 	cornellWalls->Add(make_shared<YZRect>(0, 555, 0, 555, 0, red));
