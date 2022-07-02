@@ -3,7 +3,7 @@ A RayTracer.
 
 Implements Basic Primitive Shapes, Transformations, Rotations, Reflection, Refraction, UV Texture Mapping.
 
-Utilizes a BSP-tree hierarchy and CPU Multithreading. 
+Utilizes a BSP-tree hierarchy as an efficiency data structure, and CPU Multithreading. 
 
 ![spherical](Renders/spheres.gif)
 

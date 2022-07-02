@@ -59,7 +59,7 @@ inline bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& recor
 	auto outwardNormal = (record.Point - m_center) / m_radius;
 	record.SetFaceNormal(r, outwardNormal);
 
-	GetSphereUV(record.Point, record.u, record.v);
+	GetSphereUV(outwardNormal, record.u, record.v);
 
 	return true;
 }

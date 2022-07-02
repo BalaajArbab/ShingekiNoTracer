@@ -94,7 +94,7 @@ inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	normal[2] = -m_sinTheta * record.Normal[0] + m_cosTheta * record.Normal[2];
 
 	record.Point = point;
-	record.SetFaceNormal(rotatedRay, normal);
+	record.SetFaceNormal(r, normal);
 
 	return true;
 }
@@ -189,7 +189,7 @@ inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	normal[2] = m_sinTheta * record.Normal[1] + m_cosTheta * record.Normal[2];
 
 	record.Point = point;
-	record.SetFaceNormal(rotatedRay, normal);
+	record.SetFaceNormal(r, normal);
 
 
 	return true;
@@ -285,7 +285,7 @@ inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 	normal[1] = m_sinTheta * record.Normal[0] + m_cosTheta * record.Normal[1];
 
 	record.Point = point;
-	record.SetFaceNormal(rotatedRay, normal);
+	record.SetFaceNormal(r, normal);
 
 
 	return true;

@@ -69,21 +69,83 @@ void RandomScene(HittableList& worldObjects)
 
 }
 
-void Scene1(HittableList& worldObjects)
+void RandomSceneLights(HittableList& worldObjects)
 {
-	auto materialGround = make_shared<Lambertian>(make_shared<CheckerTexture>(Colour{ 0, 0, 0 }, Colour{ 1, 1, 1 }));
-	auto materialCenter = make_shared<Lambertian>(Colour{ 0.9, 0.4, 0.0 });
-	auto materialLeft = make_shared<Dielectric>(1.3);
-	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.1);
+	auto groundTexture = make_shared<CheckerTexture>(Colour{ 0.2, 0.2, 0.2 }, Colour{ 1, 1, 1 });
+	groundTexture->SetFrequency(2);
 
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, materialGround));
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, -1.0), 0.5, materialCenter));
-	worldObjects.Add(make_shared<Sphere>(Point3(-1.3, 0.0, -1.0), 0.5, materialLeft));
-	//worldObjects.Add(make_shared<Sphere>(Point3(-1.8, 0.0, -1.0), -0.45, materialLeft));
-	worldObjects.Add(make_shared<Sphere>(Point3(1.3, 0.0, -1.0), 0.5, materialRight));
+	auto groundMaterial = make_shared<Metal>(groundTexture, 0.2);
+	worldObjects.Add(make_shared<Sphere>(Point3{ 0, -1000, 0 }, 1000, groundMaterial));
+
+	auto dielectricMat = make_shared <Dielectric>(1.5);
+
+	for (int a = -11; a < 11; a += 2)
+	{
+		for (int b = -11; b < 11; b += 2)
+		{
+			auto chooseMaterial = RandomDouble();
+
+			Point3 center{ a + 0.9 * RandomDouble(), 0.2, b + 0.9 * RandomDouble() };
+
+			if ((center - Point3(4, 0.2, 0)).Magnitude() > 0.9)
+			{
+				shared_ptr<Material> sphereMaterial;
+
+				if (chooseMaterial < 0.8)
+				{
+					// Diffuse
+					Colour colour = RandomVector3() * RandomVector3() - Colour{ -0.3, 0, 0.7 };
+					colour = Clamp(colour);
+					sphereMaterial = make_shared<Lambertian>(colour);
+					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
+				}
+				else if (chooseMaterial < 0.95)
+				{
+					// Metal
+					Colour colour = RandomVector3(0.5, 1) - Colour{ -0.3, 0, 0.7 };
+					colour = Clamp(colour);
+					double fuzz = RandomDouble(0, 0.5);
+					sphereMaterial = make_shared<Metal>(colour, fuzz);
+					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
+				}
+				else
+				{
+					worldObjects.Add(make_shared<Sphere>(center, 0.2, dielectricMat));
+				}
+			}
+		}
+	}
+
+	worldObjects.Add(make_shared<Sphere>(Point3{ 0, 1, 0 }, 1.0, dielectricMat));
+
+	auto lambertianMat = make_shared<Lambertian>(Colour{ 0.9, 0.4, 0.1 });
+	worldObjects.Add(make_shared<Sphere>(Point3{ -4, 1, 0 }, 1.0, lambertianMat));
+
+	auto metalMat = make_shared<Metal>(Colour{ 0.8, 0.6, 0.1 }, 0.0);
+	worldObjects.Add(make_shared<Sphere>(Point3{ 4, 1, 0 }, 1.0, metalMat));
+
+	auto lightMat = make_shared<DiffuseLight>(Colour{ 20.0, 14.0, 5.0 });
+	worldObjects.Add(make_shared<Sphere>(Point3{ 0, 100, 0 }, 25.0, lightMat));
+
+	auto spaceTexture = make_shared<ImageTexture>("images/space.jpg");
+	auto backgroundMat = make_shared<Skybox>(spaceTexture);
+
+	auto front = make_shared<XYRect>(-800, 800, -200, 500, 500, backgroundMat);
+	auto back = make_shared<XYRect>(-800, 800, -200, 500, -500, backgroundMat);
+
+	auto top = make_shared<XZRect>(-800, 800, -500, 500, 500, backgroundMat);
+
+	auto left = make_shared<YZRect>(-500, 500, -500, 500, -800, backgroundMat);
+	auto right = make_shared<YZRect>(-500, 500, -500, 500, 800, backgroundMat);
+
+	worldObjects.Add(front);
+	worldObjects.Add(back);
+	worldObjects.Add(top);
+	worldObjects.Add(left);
+	worldObjects.Add(right);
 }
 
-void Scene2(HittableList& worldObjects)
+void Scene1(HittableList& worldObjects)
 {
 	auto materialGround = make_shared<Lambertian>((Colour{ 0.8, 0.4, 0 }));
 
@@ -408,4 +470,87 @@ void Sandbox(HittableList& worldObjects)
 
 	worldObjects.Add(zebra);
 
+}
+
+void Sasageyo(HittableList& worldObjects)
+{
+	auto wofImage = make_shared<ImageTexture>("images/wof.jpg");
+	auto materialMainSphere = make_shared<Lambertian>(wofImage);
+	auto wofSphere = make_shared<Sphere>(Point3{ 0, 0, 0 }, 5, materialMainSphere);
+
+	auto groundTexture = make_shared<SolidColour>(Colour{ 0.46, 0.76, 0.18 });
+	auto matGround = make_shared<Skybox>(groundTexture);
+	auto ground = make_shared<XZRect>(-2000, 2000, -2000, 2000, -60, matGround);
+
+	auto metalMat = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.1);
+
+	for (int i = 0; i < 12; ++i)
+	{
+		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ 0, 0, 15 }, 3, metalMat);
+		sphere = make_shared<RotateX>(sphere, i * (360 / 12));
+
+		worldObjects.Add(sphere);
+	}
+
+	for (int i = 0; i < 12; ++i)
+	{
+		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ 5, 0, 25 }, 2.5, metalMat);
+		sphere = make_shared<RotateX>(sphere, i * (360 / 12));
+
+		worldObjects.Add(sphere);
+	}
+
+	worldObjects.Add(wofSphere);
+	worldObjects.Add(ground);
+}
+
+void KekWorld(HittableList& worldObjects)
+{
+
+	auto kek1 = make_shared<ImageTexture>("images/KEK1.png");
+	auto kek2 = make_shared<ImageTexture>("images/KEK2.png");
+	auto kek3 = make_shared<ImageTexture>("images/KEK3.png");
+	auto kek4 = make_shared<ImageTexture>("images/KEK4.png");
+
+	auto kek1m = make_shared<Lambertian>(kek1);
+	auto kek2m = make_shared<Lambertian>(kek2);
+	auto kek3m = make_shared<Lambertian>(kek3);
+	auto kek4m = make_shared<Lambertian>(kek4);
+
+
+	for (int x = -11; x < 11; x += 5)
+	{
+		for (int y = 0; y < 22; y += 5)
+		{
+			for (int z = -11; z < 11; z += 5)
+			{
+				Vector3 center{ 3 * x + RandomDouble(), 3 * y + RandomDouble(), 4 * z + RandomDouble()};
+				double radius = RandomDouble(1.0, 4.0);
+
+				int kek = RandomInteger(1, 4);
+				shared_ptr<Material> kekMaterial;
+
+				switch (kek)
+				{
+				case 1:
+					kekMaterial = kek1m;
+					break;
+				case 2:
+					kekMaterial = kek2m;
+					break;
+				case 3:
+					kekMaterial = kek3m;
+					break;
+				case 4:
+					kekMaterial = kek4m;
+					break;
+				}
+
+				worldObjects.Add(make_shared<Sphere>(center, radius, kekMaterial));
+
+			}
+		}
+	}
+
+	
 }

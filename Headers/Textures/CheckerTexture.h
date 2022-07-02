@@ -22,16 +22,22 @@ public:
 
 	virtual Colour Value(double u, double v, const Point3& p) const override
 	{
-		auto sines = sin(1 * p.X()) * sin(1 * p.Y()) * sin(1 * p.Z());
+		auto sines = sin(m_frequency * p.X()) * sin(m_frequency * p.Y()) * sin(m_frequency * p.Z());
 
 		if (sines < 0) return m_odd->Value(u, v, p);
 
 		return m_even->Value(u, v, p);
 	}
 
+	void SetFrequency(double freq)
+	{
+		m_frequency = freq;
+	}
+
 private:
 	shared_ptr<Texture> m_even;
 	shared_ptr<Texture> m_odd;
+	double m_frequency{ 1 };
 
 };
 

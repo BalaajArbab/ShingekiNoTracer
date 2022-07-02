@@ -4,8 +4,8 @@
 
 
 // Forward Declarations.
-Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth, int threadID);
-void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background, int threadID);
+Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth, int threadID, bool gradientBackground);
+void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background, int threadID, bool gradientBackground);
 
 
 int main()
@@ -17,7 +17,7 @@ int main()
 	double aspectRatio = 16.0 / 9.0;
 	int imageHeight = 600;
 	int imageWidth = static_cast<int>(imageHeight * aspectRatio);
-	int samplesPerPixel = 100; // Keep this an even multiple of g_THREADCOUNT
+	int samplesPerPixel = 100; // Keep this an even multiple of g_THREAD_COUNT
 	int maxDepth = 50;
 
 	Image image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
@@ -26,29 +26,44 @@ int main()
 	// World / Camera
 	HittableList worldObjects;
 	Colour background{ 0.1, 0.4, 0.9 };
+	bool gradientBackground = false;
 	
 
 	Point3 lookFrom{ 0, 0, 1 };
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 4;
+	const int scene = 7;
 
 	switch (scene)
 	{
 	case 0: 
 		RandomScene(worldObjects);
 
-		lookFrom = Point3{ 13, 3, 10 };
-		lookAt = Point3{ 0, 0, -2 };
+		lookFrom = Point3{ 13, 2, 3 };
+		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 20.0;
 
 		break;
 	case 1:
-		Scene1(worldObjects);
+		RandomSceneLights(worldObjects);
+
+		aspectRatio = 16.0 / 9.0;
+		imageHeight = 1080;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 1000;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
+
+		background = Colour{ 0, 0, 0 };
+
+		lookFrom = Point3{ 13, 2, 3 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 30.0;
+
 		break;
 	case 2:
-		Scene2(worldObjects);
+		Scene1(worldObjects);
 
 		background = Colour{ 1, 1, 1 };
 
@@ -80,7 +95,7 @@ int main()
 		aspectRatio = 1.0;
 		imageHeight = 1000;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 100;
+		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();	
 
@@ -106,6 +121,42 @@ int main()
 		image.SetSamplesAsMultipleOfTheads();
 
 		background = Colour{ 0.1, 0.1, 0.1 };
+
+		break;
+	case 6:
+		Sasageyo(worldObjects);
+
+		aspectRatio = 16.0 / 9.0;
+		imageHeight = 1080;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 100;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
+
+		background = { 0.84, 0.31, 0.0 };
+		gradientBackground = true;
+
+		lookFrom = Point3{ 30, 0, 0 };
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 120.0;
+
+		break;
+	case 7:
+		KekWorld(worldObjects);
+
+		aspectRatio = 16.0 / 9.0;
+		imageHeight = 1080;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 1000;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
+
+		background = { 0.9, 0.2, 0.9 };
+		gradientBackground = true;
+
+		lookFrom = Point3{ 20, 20, 0 };
+		lookAt = Point3{ 0, 20, 0 };
+		vFOV = 120.0;
 
 		break;
 	}
@@ -148,7 +199,7 @@ int main()
 
 		for (int t = 0; t < g_THREAD_COUNT; ++t)
 		{
-			threads[t] = std::thread(Render, std::ref(image), std::ref(camera), std::ref(pixelBuffers[t]), std::ref(bvhTree), std::ref(background), t);
+			threads[t] = std::thread(Render, std::ref(image), std::ref(camera), std::ref(pixelBuffers[t]), std::ref(bvhTree), std::ref(background), t, gradientBackground);
 		}
 
 		for (auto& thread : threads) thread.join();
@@ -167,13 +218,14 @@ int main()
 	std::cout << image.ImageWidth << 'x' << image.ImageHeight << " Samples: " << image.SamplesPerPixel << '\n';
 
 	char ting;
+	std::cout << "Enter any char to exit\n";
 	std::cin >> ting;
 
 	system("picture1.bmp");
 
 }
 
-Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth, int threadID)
+Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldObjects, int depth, int threadID, bool gradientBackground)
 {
 	HitRecord record;
 
@@ -182,6 +234,15 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 	// If the ray hits no object in the world, return background colour.
 	if (!worldObjects.Hit(r, 0.001, infinity, record))
 	{
+		if (gradientBackground)
+		{
+			double t = 1 - r.Direction().Y() * 1 - r.Direction().X();
+
+			Colour col = (1 - t) * Colour{ 1, 1, 1 } + t * background;
+
+			return col * col;
+		}
+
 		return background;
 	}
 
@@ -195,10 +256,10 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 		return emitted;
 	}
 
-	return emitted + attenuation * rayColour(scattered, background, worldObjects, depth - 1, threadID);
+	return emitted + attenuation * rayColour(scattered, background, worldObjects, depth - 1, threadID, gradientBackground);
 }
 
-void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background, int threadID)
+void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, const Hittable& worldObjects, const Colour& background, int threadID, bool gradientBackground)
 {
 
 	int samplesPerThread = image.SamplesPerPixel / g_THREAD_COUNT;
@@ -218,13 +279,35 @@ void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, 
 
 				Ray r{ camera.getRay(u, v) };
 
-				c += rayColour(r, background, worldObjects, image.MaxDepth, threadID);
+				c += rayColour(r, background, worldObjects, image.MaxDepth, threadID, gradientBackground);
 
 			}
 
 			pixelBuffer.AddColour(c);
 		}
 	}
+
+}
+
+void SemiFractalXY(shared_ptr<Hittable> worldObjects, double p1, double p2, double q1, double q2, double initialPFactor, double initialQFactor, int depth, shared_ptr<Material> mat)
+{
+	if (depth != 0)
+	{
+		double pMid = fabs(p1 - p2) * initialPFactor;
+		double qMid = fabs(q1 - q2) * initialQFactor;
+
+		SemiFractalXY(worldObjects, p1, p1 + pMid, q1, q1 + qMid, 0.5, 0.5, depth - 1, mat);
+		SemiFractalXY(worldObjects, p1, p1 + pMid, q1 + qMid, q2, 0.5, 0.5, depth - 1, mat);
+
+		SemiFractalXY(worldObjects, p1 + pMid, p2, q1, q1 + qMid, 0.5, 0.5, depth - 1, mat);
+		SemiFractalXY(worldObjects, p1 + pMid, p2, q1 + qMid, q2, 0.5, 0.5, depth - 1, mat);
+	}
+
+	double rotate = p1 * p2 * q1 * q2;
+
+
+
+
 
 }
 
