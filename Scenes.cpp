@@ -12,6 +12,7 @@
 #include <Shapes/Cylinder.h>
 #include <Shapes/Translate.h>
 #include <Shapes/Rotations.h>
+#include <Shapes/Fractal.h>
 #include <Textures/CheckerTexture.h>
 #include <Textures/ImageTexture.h>
 
@@ -91,7 +92,7 @@ void RandomSceneLights(HittableList& worldObjects)
 			{
 				shared_ptr<Material> sphereMaterial;
 
-				if (chooseMaterial < 0.8)
+				if (chooseMaterial < 0.7)
 				{
 					// Diffuse
 					Colour colour = RandomVector3() * RandomVector3() - Colour{ -0.3, 0, 0.7 };
@@ -99,7 +100,7 @@ void RandomSceneLights(HittableList& worldObjects)
 					sphereMaterial = make_shared<Lambertian>(colour);
 					worldObjects.Add(make_shared<Sphere>(center, 0.2, sphereMaterial));
 				}
-				else if (chooseMaterial < 0.95)
+				else if (chooseMaterial < 0.90)
 				{
 					// Metal
 					Colour colour = RandomVector3(0.5, 1) - Colour{ -0.3, 0, 0.7 };
@@ -118,7 +119,7 @@ void RandomSceneLights(HittableList& worldObjects)
 
 	worldObjects.Add(make_shared<Sphere>(Point3{ 0, 1, 0 }, 1.0, dielectricMat));
 
-	auto lambertianMat = make_shared<Lambertian>(Colour{ 0.9, 0.4, 0.1 });
+	auto lambertianMat = make_shared<Lambertian>(Colour{ 0.3, 0.294, 1.0 });
 	worldObjects.Add(make_shared<Sphere>(Point3{ -4, 1, 0 }, 1.0, lambertianMat));
 
 	auto metalMat = make_shared<Metal>(Colour{ 0.8, 0.6, 0.1 }, 0.0);
@@ -553,4 +554,12 @@ void KekWorld(HittableList& worldObjects)
 	}
 
 	
+}
+
+void ChaosTheory(HittableList& worldObjects)
+{
+	//auto material = make_shared<Lambertian>(Colour{ 0.5, 0.8, 0.2 });
+	auto material = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
+
+	SemiFractalXY(worldObjects, -500, 500, -500, 500, 0.2, 0.7, 4, -400, material);
 }

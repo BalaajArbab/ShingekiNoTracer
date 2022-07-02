@@ -1,11 +1,7 @@
 #ifndef IMAGE_TEXTURE_H
 #define IMAGE_TEXTURE_H
 
-#define _CRT_SECURE_NO_WARNINGS
-
-#define STB_IMAGE_IMPLEMENTATION
-
-#include <stb_image.h>
+#include <ImageIO.h>
 
 #include <Textures/Texture.h>
 

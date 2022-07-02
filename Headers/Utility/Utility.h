@@ -29,6 +29,11 @@ inline double DegreesToRadians(double degrees)
 	return (pi * degrees) / 180.0;
 }
 
+inline double RadiansToDegrees(double radians)
+{
+	return radians * (180.0 / pi);
+}
+
 inline double RandomDouble(int id = 0)
 {
 	thread_local std::uniform_real_distribution dist{ 0.0, 1.0 };

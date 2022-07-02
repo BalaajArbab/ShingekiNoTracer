@@ -27,17 +27,17 @@ int main()
 	HittableList worldObjects;
 	Colour background{ 0.1, 0.4, 0.9 };
 	bool gradientBackground = false;
-	
+
 
 	Point3 lookFrom{ 0, 0, 1 };
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 7;
+	const int scene = 1;
 
 	switch (scene)
 	{
-	case 0: 
+	case 0:
 		RandomScene(worldObjects);
 
 		lookFrom = Point3{ 13, 2, 3 };
@@ -49,7 +49,7 @@ int main()
 		RandomSceneLights(worldObjects);
 
 		aspectRatio = 16.0 / 9.0;
-		imageHeight = 1080;
+		imageHeight = 600;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
 		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
@@ -97,7 +97,7 @@ int main()
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
 		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
-		image.SetSamplesAsMultipleOfTheads();	
+		image.SetSamplesAsMultipleOfTheads();
 
 		background = Colour{ 0, 0, 0 };
 
@@ -156,6 +156,24 @@ int main()
 
 		lookFrom = Point3{ 20, 20, 0 };
 		lookAt = Point3{ 0, 20, 0 };
+		vFOV = 120.0;
+
+		break;
+	case 8:
+		ChaosTheory(worldObjects);
+
+		aspectRatio = 16.0 / 9.0;
+		imageHeight = 600;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 100;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
+
+		background = { 0.9, 0.2, 0.9 };
+		gradientBackground = true;
+
+		lookFrom = Point3{ 0, 0, 20 };
+		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 120.0;
 
 		break;
@@ -289,27 +307,7 @@ void Render(const Image& image, const Camera& camera, PixelBuffer& pixelBuffer, 
 
 }
 
-void SemiFractalXY(shared_ptr<Hittable> worldObjects, double p1, double p2, double q1, double q2, double initialPFactor, double initialQFactor, int depth, shared_ptr<Material> mat)
-{
-	if (depth != 0)
-	{
-		double pMid = fabs(p1 - p2) * initialPFactor;
-		double qMid = fabs(q1 - q2) * initialQFactor;
 
-		SemiFractalXY(worldObjects, p1, p1 + pMid, q1, q1 + qMid, 0.5, 0.5, depth - 1, mat);
-		SemiFractalXY(worldObjects, p1, p1 + pMid, q1 + qMid, q2, 0.5, 0.5, depth - 1, mat);
-
-		SemiFractalXY(worldObjects, p1 + pMid, p2, q1, q1 + qMid, 0.5, 0.5, depth - 1, mat);
-		SemiFractalXY(worldObjects, p1 + pMid, p2, q1 + qMid, q2, 0.5, 0.5, depth - 1, mat);
-	}
-
-	double rotate = p1 * p2 * q1 * q2;
-
-
-
-
-
-}
 
 
 
