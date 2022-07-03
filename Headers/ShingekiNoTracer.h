@@ -37,12 +37,14 @@
 #include <Shapes/Translate.h>
 #include <Shapes/Rotations.h>
 #include <Shapes/Fractal.h>
+#include <Shapes/ConstantMedium.h>
 
 #include <Materials/Material.h>
 #include <Materials/Lambertian.h>
 #include <Materials/Metal.h>
 #include <Materials/Dielectric.h>
 #include <Materials/DiffuseLight.h>
+#include <Materials/Isotropic.h>
 
 #include <Textures/Texture.h>
 #include <Textures/CheckerTexture.h>

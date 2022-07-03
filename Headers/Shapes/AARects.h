@@ -15,7 +15,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -33,7 +33,7 @@ private:
 
 };
 
-inline bool XYRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool XYRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	double t = (m_z - r.Origin().Z()) / r.Direction().Z();
 
@@ -77,7 +77,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -95,7 +95,7 @@ private:
 
 };
 
-inline bool XZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool XZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	double t = (m_y - r.Origin().Y()) / r.Direction().Y();
 
@@ -138,7 +138,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -156,7 +156,7 @@ private:
 
 };
 
-inline bool YZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool YZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	double t = (m_x - r.Origin().X()) / r.Direction().X();
 

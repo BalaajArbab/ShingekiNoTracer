@@ -1,7 +1,7 @@
 # ShingekiNoTracer
 A RayTracer. 
 
-Implements Basic Primitive Shapes, Transformations, Rotations, Reflection, Refraction, UV Texture Mapping.
+Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refraction, UV Texture Mapping, Volumes(Fog/Mist Subsurface Scattering).
 
 Utilizes a BSP-tree hierarchy as an efficiency data structure, and CPU Multithreading. 
 

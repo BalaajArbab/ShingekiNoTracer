@@ -14,7 +14,7 @@ public:
 
 	Box(const Point3& boxMin, const Point3& boxMax, shared_ptr<Material> material, std::bitset<6> mirrorMask, shared_ptr<Material> otherMat);
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override
 	{
 		outBox = AABB{ m_boxMin, m_boxMax };
@@ -57,9 +57,9 @@ inline Box::Box(const Point3& boxMin, const Point3& boxMax, shared_ptr<Material>
 	m_sides.Add(rightWall);
 }
 
-inline bool Box::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool Box::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
-	return m_sides.Hit(r, tMin, tMax, record);
+	return m_sides.Hit(r, tMin, tMax, record, id);
 }
 
 #endif

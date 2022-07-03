@@ -16,7 +16,7 @@ public:
 
 	BVHNode(const std::vector<shared_ptr<Hittable>>& srcObjects, size_t start, size_t end);
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 
 	virtual bool BoundingBox(AABB& outBox) const override;
 
@@ -75,12 +75,12 @@ inline BVHNode::BVHNode(const std::vector<shared_ptr<Hittable>>& srcObjects, siz
 	m_box = SurroundingBox(boxLeft, boxRight);
 }
 
-inline bool BVHNode::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool BVHNode::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	if (!m_box.Hit(r, tMin, tMax)) return false;
 
-	bool hitLeft = m_leftChild->Hit(r, tMin, tMax, record);
-	bool hitRight = m_rightChild->Hit(r, tMin, (hitLeft ? record.t : tMax), record);
+	bool hitLeft = m_leftChild->Hit(r, tMin, tMax, record, id);
+	bool hitRight = m_rightChild->Hit(r, tMin, (hitLeft ? record.t : tMax), record, id);
 
 	return hitLeft || hitRight;
 }

@@ -22,14 +22,14 @@ public:
 		: m_center{ c }, m_radius{ r }
 	{}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	static void GetSphereUV(const Point3& p, double& u, double& v);
 
 };
 
-inline bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool Sphere::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	Vector3 oc = r.Origin() - m_center;
 

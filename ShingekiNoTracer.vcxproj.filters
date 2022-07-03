@@ -134,6 +134,12 @@
     <ClInclude Include="Headers\Shapes\Fractal.h">
       <Filter>Shapes</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Shapes\ConstantMedium.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Headers\Materials\Isotropic.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

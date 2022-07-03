@@ -33,7 +33,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 1;
+	const int scene = 9;
 
 	switch (scene)
 	{
@@ -177,6 +177,22 @@ int main()
 		vFOV = 120.0;
 
 		break;
+	
+	case 9:
+		CornellSmoke(worldObjects);
+		aspectRatio = 1.0;
+		imageHeight = 600;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 1000;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
+
+		background = Colour{ 0, 0, 0 };
+
+		lookFrom = Point3{ 278, 278, -800 };
+		lookAt = Point3{ 278, 278, 0 };
+		vFOV = 40.0;
+		break;
 	}
 
 	BVHNode bvhTree{ worldObjects };
@@ -250,7 +266,7 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 	if (depth <= 0) return Colour{};
 
 	// If the ray hits no object in the world, return background colour.
-	if (!worldObjects.Hit(r, 0.001, infinity, record))
+	if (!worldObjects.Hit(r, 0.001, infinity, record, threadID))
 	{
 		if (gradientBackground)
 		{

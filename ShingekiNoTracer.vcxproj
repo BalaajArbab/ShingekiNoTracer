@@ -26,6 +26,7 @@
     <ClInclude Include="Headers\ImageIO.h" />
     <ClInclude Include="Headers\Materials\Dielectric.h" />
     <ClInclude Include="Headers\Materials\DiffuseLight.h" />
+    <ClInclude Include="Headers\Materials\Isotropic.h" />
     <ClInclude Include="Headers\Materials\Lambertian.h" />
     <ClInclude Include="Headers\Materials\Material.h" />
     <ClInclude Include="Headers\Materials\Metal.h" />
@@ -42,6 +43,7 @@
     <ClInclude Include="Headers\Renderer\Ray.h" />
     <ClInclude Include="Headers\Scenes.h" />
     <ClInclude Include="Headers\Shapes\Box.h" />
+    <ClInclude Include="Headers\Shapes\ConstantMedium.h" />
     <ClInclude Include="Headers\Shapes\Cylinder.h" />
     <ClInclude Include="Headers\Shapes\Fractal.h" />
     <ClInclude Include="Headers\Shapes\Rotations.h" />

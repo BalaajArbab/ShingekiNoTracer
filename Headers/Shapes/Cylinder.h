@@ -13,7 +13,7 @@ public:
 		: m_z0{ z0 }, m_z1{ z1 }, m_radius{ r }, m_materialPtr{ m }
 	{}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	static void GetCylinderUV(const Point3& p, double& u, double& v);
@@ -27,7 +27,7 @@ public:
 
 };
 
-inline bool Cylinder::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool Cylinder::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	double xOri = r.Origin().X();
 	double yOri = r.Origin().Y();
@@ -40,7 +40,7 @@ inline bool Cylinder::Hit(const Ray& r, double tMin, double tMax, HitRecord& rec
 
 	XYRect topCap{ 0 - m_radius, 0 + m_radius, 0 - m_radius, 0 + m_radius, m_z1, m_materialPtr };
 
-	if (topCap.Hit(r, tMin, tMax, record))
+	if (topCap.Hit(r, tMin, tMax, record, id))
 	{
 		auto toCenter = record.Point - m_center - Vector3{ 0, 0, record.Point.Z() };
 
@@ -52,7 +52,7 @@ inline bool Cylinder::Hit(const Ray& r, double tMin, double tMax, HitRecord& rec
 
 	XYRect bottomCap{ 0 - m_radius, 0 + m_radius, 0 - m_radius, 0 + m_radius, m_z0, m_materialPtr };
 
-	if (bottomCap.Hit(r, tMin, (capHit ? record.t : tMax), record))
+	if (bottomCap.Hit(r, tMin, (capHit ? record.t : tMax), record, id))
 	{
 		auto toCenter = record.Point - m_center - Vector3{ 0, 0, record.Point.Z() };
 

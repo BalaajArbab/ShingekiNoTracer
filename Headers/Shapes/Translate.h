@@ -12,7 +12,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 private:
@@ -21,11 +21,11 @@ private:
 
 };
 
-inline bool Translate::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool Translate::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	Ray movedRay{ r.Origin() - m_offset, r.Direction()};
 
-	if (!m_object->Hit(movedRay, tMin, tMax, record)) return false;
+	if (!m_object->Hit(movedRay, tMin, tMax, record, id)) return false;
 
 	record.Point += m_offset;
 	record.SetFaceNormal(movedRay, record.Normal);

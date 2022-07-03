@@ -12,5 +12,6 @@ void Sandbox(HittableList& worldObjects);
 void Sasageyo(HittableList& worldObjects);
 void KekWorld(HittableList& worldObjects);
 void ChaosTheory(HittableList& worldObjects);
+void CornellSmoke(HittableList& worldObjects);
 
 #endif

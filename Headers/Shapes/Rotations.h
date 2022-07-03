@@ -9,7 +9,7 @@ class RotateY : public Hittable
 public:
 	RotateY(shared_ptr<Hittable> object, double angle);
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 
 	virtual bool BoundingBox(AABB& outBox) const override
 	{
@@ -69,7 +69,7 @@ inline RotateY::RotateY(shared_ptr<Hittable> object, double angle)
 	m_boundingBox = AABB{ min, max };
 }
 
-inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
@@ -82,7 +82,7 @@ inline bool RotateY::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 
 	Ray rotatedRay{ origin, direction };
 
-	if (!m_object->Hit(rotatedRay, tMin, tMax, record)) return false;
+	if (!m_object->Hit(rotatedRay, tMin, tMax, record, id)) return false;
 
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
@@ -104,7 +104,7 @@ class RotateX : public Hittable
 public:
 	RotateX(shared_ptr<Hittable> object, double angle);
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 
 	virtual bool BoundingBox(AABB& outBox) const override
 	{
@@ -164,7 +164,7 @@ inline RotateX::RotateX(shared_ptr<Hittable> object, double angle)
 	m_boundingBox = AABB{ min, max };
 }
 
-inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
@@ -177,7 +177,7 @@ inline bool RotateX::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 
 	Ray rotatedRay{ origin, direction };
 
-	if (!m_object->Hit(rotatedRay, tMin, tMax, record)) return false;
+	if (!m_object->Hit(rotatedRay, tMin, tMax, record, id)) return false;
 
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
@@ -200,7 +200,7 @@ class RotateZ : public Hittable
 public:
 	RotateZ(shared_ptr<Hittable> object, double angle);
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
 
 	virtual bool BoundingBox(AABB& outBox) const override
 	{
@@ -260,7 +260,7 @@ inline RotateZ::RotateZ(shared_ptr<Hittable> object, double angle)
 	m_boundingBox = AABB{ min, max };
 }
 
-inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& record) const
+inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
 {
 	Point3 origin = r.Origin();
 	Point3 direction = r.Direction();
@@ -273,7 +273,7 @@ inline bool RotateZ::Hit(const Ray& r, double tMin, double tMax, HitRecord& reco
 
 	Ray rotatedRay{ origin, direction };
 
-	if (!m_object->Hit(rotatedRay, tMin, tMax, record)) return false;
+	if (!m_object->Hit(rotatedRay, tMin, tMax, record, id)) return false;
 
 	Point3 point = record.Point;
 	Vector3 normal = record.Normal;
