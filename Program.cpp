@@ -33,7 +33,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 9;
+	const int scene = 6;
 
 	switch (scene)
 	{
@@ -49,7 +49,7 @@ int main()
 		RandomSceneLights(worldObjects);
 
 		aspectRatio = 16.0 / 9.0;
-		imageHeight = 600;
+		imageHeight = 1080;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
 		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
@@ -195,6 +195,7 @@ int main()
 		break;
 	}
 
+	// Construct BSP-Tree of world objects.
 	BVHNode bvhTree{ worldObjects };
 
 

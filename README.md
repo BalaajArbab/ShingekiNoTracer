@@ -5,7 +5,7 @@ Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refracti
 
 Utilizes a BSP-tree hierarchy as an efficiency data structure, and CPU Multithreading. 
 
-![spherical](Renders/spheres.gif)
+![spherical](Renders/SpaceSpheresMove.gif)
 
 More renders in Renders/
 

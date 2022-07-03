@@ -503,7 +503,47 @@ void Sasageyo(HittableList& worldObjects)
 	}
 
 	worldObjects.Add(wofSphere);
-	worldObjects.Add(ground);
+	//worldObjects.Add(ground);
+
+	// Skybox
+
+	auto skyFront = make_shared<ImageTexture>("images/front.jpg");
+	auto matFront = make_shared<Skybox>(skyFront);
+	auto skyBack = make_shared <ImageTexture>("images/back.jpg");
+	auto matBack = make_shared<Skybox>(skyBack);
+
+	auto skyLeft = make_shared<ImageTexture>("images/left.jpg");
+	auto matLeft = make_shared<Skybox>(skyLeft);
+	auto skyRight = make_shared<ImageTexture>("images/right.jpg");
+	auto matRight = make_shared<Skybox>(skyRight);
+
+	auto skyTop = make_shared<ImageTexture>("images/top.jpg");
+	auto matTop = make_shared<Skybox>(skyTop);
+	auto skyBottom = make_shared<ImageTexture>("images/bottom.jpg");
+	auto matBottom = make_shared<Skybox>(skyBottom);
+
+	auto skyboxObjects = make_shared<HittableList>();
+
+	auto xyRect1 = make_shared<XYRect>(-5000, 5000, -5000, 5000, -5000, matFront);
+	auto xyRect2 = make_shared<XYRect>(-5000, 5000, -5000, 5000, 5000, matBack);
+
+	auto yzRect1 = make_shared<YZRect>(-5000, 5000, -5000, 5000, -5000, matLeft);
+	auto yzRect2 = make_shared<YZRect>(-5000, 5000, -5000, 5000, 5000, matRight);
+
+	auto xzRect1 = make_shared<XZRect>(-5000, 5000, -5000, 5000, 5000, matTop);
+	auto xzRect2 = make_shared<XZRect>(-5000, 5000, -5000, 5000, -5000, matBottom);
+
+
+	skyboxObjects->Add(xyRect1);
+	skyboxObjects->Add(xyRect2);
+
+	skyboxObjects->Add(yzRect1);
+	skyboxObjects->Add(yzRect2);
+
+	skyboxObjects->Add(xzRect1);
+	skyboxObjects->Add(xzRect2);
+
+	worldObjects.Add(skyboxObjects);
 }
 
 void KekWorld(HittableList& worldObjects)
