@@ -35,7 +35,7 @@ public:
 		return m_objects;
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 private:
@@ -43,7 +43,7 @@ private:
 
 };
 
-inline bool HittableList::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
+inline bool HittableList::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const
 {
 	HitRecord tempRecord;
 	bool hitAnything = false;
@@ -51,7 +51,7 @@ inline bool HittableList::Hit(const Ray& r, double tMin, double tMax, HitRecord&
 
 	for (const auto& object : m_objects)
 	{
-		if (object->Hit(r, tMin, tMax, tempRecord, id))
+		if (object->Hit(r, tMin, tMax, tempRecord, id, depth))
 		{
 			hitAnything = true;
 

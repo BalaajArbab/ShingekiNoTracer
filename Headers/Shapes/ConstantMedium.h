@@ -24,7 +24,7 @@ public:
 	}
 
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 private:
@@ -34,7 +34,7 @@ private:
 
 };
 
-inline bool ConstantMedium::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
+inline bool ConstantMedium::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const
 {
 	// Print occasional samples when debugging. To enable, set enableDebug true.
 	const bool enableDebug = false;
@@ -43,9 +43,9 @@ inline bool ConstantMedium::Hit(const Ray& r, double tMin, double tMax, HitRecor
 	HitRecord record1;
 	HitRecord record2;
 
-	if (!m_boundary->Hit(r, -infinity, infinity, record1, id)) return false;
+	if (!m_boundary->Hit(r, -infinity, infinity, record1, id, depth)) return false;
 
-	if (!m_boundary->Hit(r, record1.t + 0.0001, infinity, record2, id)) return false;
+	if (!m_boundary->Hit(r, record1.t + 0.0001, infinity, record2, id, depth)) return false;
 
 	if (debugging) std::cout << "tMin: " << record1.t << ", tMax: " << record2.t << '\n';
 

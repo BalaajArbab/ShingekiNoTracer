@@ -15,7 +15,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -39,8 +39,10 @@ private:
 
 };
 
-inline bool XYRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
+inline bool XYRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const
 {
+	if (m_invisible && depth == 50) return false; // Will make the wall invisible to first ray(camera ray) if global/image max depth is set to 50.
+
 	double t = (m_z - r.Origin().Z()) / r.Direction().Z();
 
 	if (t < tMin || t > tMax) return false;
@@ -83,7 +85,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -98,11 +100,14 @@ private:
 	double m_z0;
 	double m_z1;
 	double m_y;
+	bool m_invisible{ false };
 
 };
 
-inline bool XZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
+inline bool XZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const
 {
+	if (m_invisible && depth == 50) return false; // Will make the wall invisible to first ray(camera ray) if global/image max depth is set to 50.
+
 	double t = (m_y - r.Origin().Y()) / r.Direction().Y();
 
 	if (t < tMin || t > tMax) return false;
@@ -144,7 +149,7 @@ public:
 
 	}
 
-	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const override;
+	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 	virtual bool BoundingBox(AABB& outBox) const override;
 
 	void SetMaterial(shared_ptr<Material> newMat)
@@ -159,11 +164,14 @@ private:
 	double m_z0;
 	double m_z1;
 	double m_x;
+	bool m_invisible{ false };
 
 };
 
-inline bool YZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id) const
+inline bool YZRect::Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const
 {
+	if (m_invisible && depth == 50) return false; // Will make the wall invisible to first ray(camera ray) if global/image max depth is set to 50.
+
 	double t = (m_x - r.Origin().X()) / r.Direction().X();
 
 	if (t < tMin || t > tMax) return false;
