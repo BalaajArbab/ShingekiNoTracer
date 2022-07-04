@@ -129,14 +129,11 @@ int main()
 		aspectRatio = 16.0 / 9.0;
 		imageHeight = 1080;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 100;
+		samplesPerPixel = 1000;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
-		background = { 0.84, 0.31, 0.0 };
-		gradientBackground = true;
-
-		lookFrom = Point3{ 30, 0, 0 };
+		lookFrom = Point3{ 0, 0, -30 };
 		lookAt = Point3{ 0, 0, 0 };
 		vFOV = 120.0;
 

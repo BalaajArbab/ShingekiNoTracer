@@ -478,35 +478,42 @@ void Sasageyo(HittableList& worldObjects)
 {
 	auto wofImage = make_shared<ImageTexture>("images/wof.jpg");
 	auto materialMainSphere = make_shared<Lambertian>(wofImage);
-	auto wofSphere = make_shared<Sphere>(Point3{ 0, 0, 0 }, 5, materialMainSphere);
-
-	auto groundTexture = make_shared<SolidColour>(Colour{ 0.46, 0.76, 0.18 });
-	auto matGround = make_shared<Skybox>(groundTexture);
-	auto ground = make_shared<XZRect>(-2000, 2000, -2000, 2000, -60, matGround);
+	shared_ptr<Hittable> wofSphere = make_shared<Sphere>(Point3{ 0, 0, 0 }, 5, materialMainSphere);
+	wofSphere = make_shared<RotateY>(wofSphere, 90);
 
 	auto metalMat = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.1);
+	auto metalMat2 = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.2);
 
 	for (int i = 0; i < 12; ++i)
 	{
-		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ 0, 0, 15 }, 3, metalMat);
-		sphere = make_shared<RotateX>(sphere, i * (360 / 12));
+		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ -15, 0, 0 }, 3, metalMat2);
+		sphere = make_shared<RotateZ>(sphere, i * (360 / 12));
 
 		worldObjects.Add(sphere);
 	}
 
 	for (int i = 0; i < 12; ++i)
 	{
-		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ 5, 0, 25 }, 2.5, metalMat);
-		sphere = make_shared<RotateX>(sphere, i * (360 / 12));
+		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ 25, 0, -5 }, 2.5, metalMat);
+		sphere = make_shared<RotateZ>(sphere, i * (360 / 12));
 
 		worldObjects.Add(sphere);
 	}
 
 	worldObjects.Add(wofSphere);
-	//worldObjects.Add(ground);
+
+
+	// Floor
+	auto checkerTexture = make_shared<CheckerTexture>(Colour{ 0.2, 0.2, 0.2 }, Colour{ 0.8, 0.8, 0.8 });
+	checkerTexture->SetFrequency(2);
+
+	auto checkerMat = make_shared<Metal>(checkerTexture, 0.2);
+	auto floor = make_shared<Sphere>(Point3{ 0, -10030, 0 }, 10000, checkerMat);
+
+	worldObjects.Add(floor);
+
 
 	// Skybox
-
 	auto skyFront = make_shared<ImageTexture>("images/front.jpg");
 	auto matFront = make_shared<Skybox>(skyFront);
 	auto skyBack = make_shared <ImageTexture>("images/back.jpg");
@@ -532,7 +539,6 @@ void Sasageyo(HittableList& worldObjects)
 
 	auto xzRect1 = make_shared<XZRect>(-5000, 5000, -5000, 5000, 5000, matTop);
 	auto xzRect2 = make_shared<XZRect>(-5000, 5000, -5000, 5000, -5000, matBottom);
-
 
 	skyboxObjects->Add(xyRect1);
 	skyboxObjects->Add(xyRect2);

@@ -23,6 +23,11 @@ public:
 		m_materialPtr = newMat;
 	}
 
+	void MakeInvisible()
+	{
+		m_invisible = true;
+	}
+
 private:
 	shared_ptr<Material> m_materialPtr;
 	double m_x0;
@@ -30,6 +35,7 @@ private:
 	double m_y0;
 	double m_y1;
 	double m_z;
+	bool m_invisible{ false };
 
 };
 
