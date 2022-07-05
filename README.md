@@ -1,13 +1,11 @@
 # ShingekiNoTracer
 A RayTracer. 
 
-Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refraction, UV Texture Mapping, Volumes(Fog/Mist Subsurface Scattering).
+Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refraction, UV Texture Mapping, Volumes(Fog/Mist Subsurface Scattering), Invisible Walls.
 
 Utilizes a BSP-tree hierarchy as an efficiency data structure, and CPU Multithreading. 
 
-![spherical](Renders/SpaceSpheresMove.gif)
-
-More renders in Renders/
+![blue](Renders/BlueChecker4000Samples_Denoised.jpg)
 
 ---
 
@@ -23,4 +21,8 @@ This program requires the [stb image writing library](https://github.com/nothing
 
 CS3388 - Computer Graphics at Western University
 
-## 
+---
+
+![space](Renders/SpaceSphereNonMove.png)
+![spherical](Renders/SpaceSpheresMove.gif)
+![rumbling](Renders/Sasageyo.png)

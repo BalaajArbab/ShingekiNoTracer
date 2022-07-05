@@ -73,7 +73,6 @@ int main()
 		image.SetSamplesAsMultipleOfTheads();
 
 		background = Colour{ 0, 0, 0 };
-		//background = Colour{ 1, 1, 1 };
 
 		lookFrom = Point3{ -700, 278, -850 };
 		lookAt = Point3{ -100, 278, 0 };
