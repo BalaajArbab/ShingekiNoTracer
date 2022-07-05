@@ -155,38 +155,25 @@ void RandomSceneLights(HittableList& worldObjects)
 void Zebra(HittableList& worldObjects)
 {
 	// Skybox
+	auto skyFront = make_shared<ImageTexture>("images/front.jpg");
+	auto matFront = make_shared<Skybox>(skyFront);
+	auto skyBack = make_shared <ImageTexture>("images/back.jpg");
+	auto matBack = make_shared<Skybox>(skyBack);
 
-	auto cloudFront = make_shared<ImageTexture>("yellowcloud_ft.jpg");
-	auto matFront = make_shared<Skybox>(cloudFront);
-	auto cloudBack = make_shared <ImageTexture>("yellowcloud_bk.jpg");
-	auto matBack = make_shared<Skybox>(cloudBack);
+	auto skyLeft = make_shared<ImageTexture>("images/left.jpg");
+	auto matLeft = make_shared<Skybox>(skyLeft);
+	auto skyRight = make_shared<ImageTexture>("images/right.jpg");
+	auto matRight = make_shared<Skybox>(skyRight);
 
-	auto cloudLeft = make_shared<ImageTexture>("yellowcloud_lf.jpg");
-	auto matLeft = make_shared<Skybox>(cloudLeft);
-	auto cloudRight = make_shared<ImageTexture>("yellowcloud_rt.jpg");
-	auto matRight = make_shared<Skybox>(cloudRight);
+	auto skyTop = make_shared<ImageTexture>("images/top.jpg");
+	auto matTop = make_shared<Skybox>(skyTop);
+	auto skyBottom = make_shared<ImageTexture>("images/bottom.jpg");
+	auto matBottom = make_shared<Skybox>(skyBottom);
 
-	auto cloudTop = make_shared<ImageTexture>("yellowcloud_up.jpg");
-	auto matTop = make_shared<Skybox>(cloudTop);
-	auto cloudBottom = make_shared<ImageTexture>("yellowcloud_dn.jpg");
-	auto matBottom = make_shared<Skybox>(cloudBottom);
+	auto stripes = make_shared<ImageTexture>("images/zebra.jpg");
+	auto stripesMat = make_shared<Skybox>(stripes);
 
 	auto skyboxObjects = make_shared<HittableList>();
-
-	/*auto cloudFront = make_shared<ImageTexture>("space.jpg");
-	auto matFront = make_shared<Skybox>(cloudFront);
-	auto cloudBack = make_shared <ImageTexture>("space.jpg");
-	auto matBack = make_shared<Skybox>(cloudBack);
-
-	auto cloudLeft = make_shared<ImageTexture>("space.jpg");
-	auto matLeft = make_shared<Skybox>(cloudLeft);
-	auto cloudRight = make_shared<ImageTexture>("space.jpg");
-	auto matRight = make_shared<Skybox>(cloudRight);
-
-	auto cloudTop = make_shared<ImageTexture>("space.jpg");
-	auto matTop = make_shared<Skybox>(cloudTop);
-	auto cloudBottom = make_shared<ImageTexture>("space.jpg");
-	auto matBottom = make_shared<Skybox>(cloudBottom);*/
 
 	auto xyRect1 = make_shared<XYRect>(-5000, 5000, -5000, 5000, -5000, matFront);
 	auto xyRect2 = make_shared<XYRect>(-5000, 5000, -5000, 5000, 5000, matBack);
@@ -196,6 +183,15 @@ void Zebra(HittableList& worldObjects)
 
 	auto xzRect1 = make_shared<XZRect>(-5000, 5000, -5000, 5000, 5000, matTop);
 	auto xzRect2 = make_shared<XZRect>(-5000, 5000, -5000, 5000, -5000, matBottom);
+
+	/*auto xyRect1 = make_shared<XYRect>(-5000, 5000, -5000, 5000, -5000, stripesMat);
+	auto xyRect2 = make_shared<XYRect>(-5000, 5000, -5000, 5000, 5000, stripesMat);
+
+	auto yzRect1 = make_shared<YZRect>(-5000, 5000, -5000, 5000, -5000, stripesMat);
+	auto yzRect2 = make_shared<YZRect>(-5000, 5000, -5000, 5000, 5000, stripesMat);
+
+	auto xzRect1 = make_shared<XZRect>(-5000, 5000, -5000, 5000, 5000, stripesMat);
+	auto xzRect2 = make_shared<XZRect>(-5000, 5000, -5000, 5000, -5000, stripesMat);*/
 
 
 	skyboxObjects->Add(xyRect1);
@@ -207,18 +203,17 @@ void Zebra(HittableList& worldObjects)
 	skyboxObjects->Add(xzRect1);
 	skyboxObjects->Add(xzRect2);
 
+	// Floor
+	auto checkerTexture = make_shared<CheckerTexture>(Colour{ 0.2, 0.2, 0.2 }, Colour{ 0.8, 0.8, 0.8 });
+	checkerTexture->SetFrequency(2);
 
-	// Ground
-
-	auto checkerMat = make_shared<Lambertian>(make_shared<CheckerTexture>(Colour{ 0, 0, 0 }, Colour{ 1, 1, 1}));
-	auto floor = make_shared<Sphere>(Point3{ 0, -10100, 0 }, 10000, checkerMat);
+	auto checkerMat = make_shared<Metal>(checkerTexture, 0.2);
+	auto floor = make_shared<Sphere>(Point3{ 0, -10030, 0 }, 10000, checkerMat);
 
 	// Materials
 
-	//auto body = make_shared<Metal>(Colour(1.0, 1.0, 1.0), 0.0);
-	auto body = make_shared<Dielectric>(1.5);
+	auto body = make_shared<Metal>(Colour(1.0, 1.0, 1.0), 0.0);
 
-	//auto hairtail = make_shared<Dielectric>(1.5);
 	auto hairtail = make_shared<Lambertian>(Colour{});
 
 	auto eyes = make_shared<Lambertian>(Colour{});
@@ -310,17 +305,9 @@ void Zebra(HittableList& worldObjects)
 	zebra->Add(hairFive);
 	zebra->Add(hairSix);
 
-	
-
-
-	// Objects / Lights
-
-	//worldObjects.Add(make_shared<XZRect>(-40, 40, -40, 40, 70, light));
-	// 
-	// 
 	worldObjects.Add(zebra);
 	worldObjects.Add(skyboxObjects);
-	//worldObjects.Add(floor);
+	worldObjects.Add(floor);
 
 }
 

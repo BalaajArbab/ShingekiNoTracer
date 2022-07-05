@@ -27,3 +27,4 @@ CS3388 - Computer Graphics at Western University
 ![spherical](Renders/SpaceSpheresMove.gif)
 ![Dragon Curve](Renders/DragonCurve.png)
 ![rumbling](Renders/Sasageyo.png)
+![Single Colour Zebra](Renders/SingleColourZebra.gif)

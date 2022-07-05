@@ -33,7 +33,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 8;
+	const int scene = 3;
 
 	switch (scene)
 	{
@@ -83,17 +83,18 @@ int main()
 		Zebra(worldObjects);
 
 		aspectRatio = 16.0 / 9.0;
-		imageHeight = 600;
+		imageHeight = 1080;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 4;
+		samplesPerPixel = 100;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
-		background = Colour{ 1, 1, 1 };
+		background = { 0.9, 0.2, 0.1 };
+		gradientBackground = true;
 
 		lookFrom = Point3{ 70, 40, 80 };
 		lookAt = Point3{ 0, 0, 0 };
-		vFOV = 135.0;
+		vFOV = 110.0;
 
 		break;
 	case 4:
@@ -116,10 +117,7 @@ int main()
 	case 5:
 		Aesthetic(worldObjects);
 
-		lookFrom = Point3{ 60, 40, 40 }; // from zebras top right
-		/*lookFrom = Point3{ 0, 0, 80 }; */// side/bodysection
-		//lookFrom = Point3{ 70, 50, 0 }; // front
-		//lookFrom = Point3{ 30, 60, 30 }; // top
+		lookFrom = Point3{ 60, 40, 40 };	
 		lookAt = Point3{ 10, 0, 0 };
 		vFOV = 120.0;
 

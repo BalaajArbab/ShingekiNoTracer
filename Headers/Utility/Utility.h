@@ -19,9 +19,6 @@ using std::sqrt;
 inline const double infinity = std::numeric_limits<double>::infinity();
 inline const double pi = 3.1415926535897932385;
 
-inline std::random_device rd;
-
-
 // Utility Functions
 
 inline double DegreesToRadians(double degrees)
