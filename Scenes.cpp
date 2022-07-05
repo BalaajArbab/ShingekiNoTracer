@@ -17,6 +17,7 @@
 #include <Shapes/ConstantMedium.h>
 #include <Textures/CheckerTexture.h>
 #include <Textures/ImageTexture.h>
+#include <Textures/RectChecker.h>
 
 void RandomScene(HittableList& worldObjects)
 {
@@ -146,22 +147,6 @@ void RandomSceneLights(HittableList& worldObjects)
 	worldObjects.Add(top);
 	worldObjects.Add(left);
 	worldObjects.Add(right);
-}
-
-void Scene1(HittableList& worldObjects)
-{
-	auto materialGround = make_shared<Lambertian>((Colour{ 0.8, 0.4, 0 }));
-
-	auto earthImage = make_shared<ImageTexture>("earth.jpg");
-	auto materialCenter = make_shared<Lambertian>(earthImage);
-
-	auto materialLeft = make_shared<Dielectric>(1.3);
-	auto materialRight = make_shared<Metal>(Colour(0.8, 0.6, 0.2), 0.0);
-
-	//worldObjects.Add(make_shared<Sphere>(Point3(0.0, -100.5, -1.0), 100.0, materialGround));
-	worldObjects.Add(make_shared<Sphere>(Point3(0.0, 0.0, 0.0), 3.0, materialCenter));
-	//worldObjects.Add(make_shared<Sphere>(Point3(-1.3, 0.0, -1.0), 0.5, materialLeft));
-	worldObjects.Add(make_shared<Sphere>(Point3(-8.0, 0.0, -9.0), 2.0, materialRight));
 }
 
 void Zebra(HittableList& worldObjects)
@@ -654,4 +639,73 @@ void CornellSmoke(HittableList& worldObjects)
 	worldObjects.Add(ball);
 
 	worldObjects.Add(oppositeWall);
+}
+
+void CornellInvisWalls(HittableList& worldObjects)
+{
+	// Textures / Materials
+	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
+	auto white = make_shared<Lambertian>(Colour{ 0.82, 0.82, 0.82 });
+	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
+	auto blue = make_shared<Lambertian>(Colour{ 0.015, 0.109, 0.21 });
+	auto light = make_shared<DiffuseLight>(Colour{ 15, 15, 15 });
+
+	auto dielectric = make_shared<Dielectric>(1.5);
+
+	auto mirror = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
+
+	auto floorTexture = make_shared<RectChecker>(Colour{ 0.73, 0.73, 0.73 }, Colour{ 0.015, 0.109, 0.21 });
+	floorTexture->SetFrequency(8);
+	auto floorMat = make_shared<Metal>(floorTexture, 0.0);
+
+	// Cornell Structure
+	auto cornellWalls = make_shared<HittableList>();
+
+	// Right
+	auto rightWall = make_shared<YZRect>(0, 555, -100, 800, -400, red);
+	rightWall->MakeInvisible();
+
+	cornellWalls->Add(rightWall);
+
+	// Left
+	cornellWalls->Add(make_shared<YZRect>(0, 555, -100, 555, 555, green));
+	
+	// Top
+	cornellWalls->Add(make_shared<XZRect>(-400, 555, -100, 800, 555, white));
+
+	// Floor
+	cornellWalls->Add(make_shared<XZRect>(-400, 555, -100, 800, 0, floorMat));
+
+	// Back
+	cornellWalls->Add(make_shared<XYRect>(0, 555, 0, 555, 555, white));
+	cornellWalls->Add(make_shared<YZRect>(0, 555, 555, 800, 0, white));
+	cornellWalls->Add(make_shared<XYRect>(-400, 0, 0, 555, 800, white));
+
+	cornellWalls->Add(make_shared<Box>(Point3{ -400, 300, 750 }, Point3{ 0, 400, 800 }, white));
+
+	// Opposite Wall
+	auto oppositeWall = make_shared <XYRect>(-400, 555, 0, 555, -100, white);
+	oppositeWall->MakeInvisible();
+
+	cornellWalls->Add(oppositeWall);
+
+	// Light
+	cornellWalls->Add(make_shared<Box>(Point3{ 150, 525, 150 }, Point3{ 420, 555, 380 }, white));
+	cornellWalls->Add(make_shared<XZRect>(150, 420, 150, 380, 524, light));
+
+	worldObjects.Add(cornellWalls);
+
+	// Objects
+	shared_ptr<Hittable> ball = make_shared<Sphere>(Point3{ -70, 110, 250 }, 110, mirror);
+
+	shared_ptr<Hittable> ball2 = make_shared<Sphere>(Point3{ -300, 35, 0 }, 35, white);
+
+	shared_ptr<Hittable> ball3 = make_shared<Sphere>(Point3{ 250, 250, 100 }, 80, dielectric);
+
+	cornellWalls->Add(make_shared<Box>(Point3{ 235, 0, 85 }, Point3{ 265, 170, 115 }, blue));
+	
+	worldObjects.Add(ball);
+	worldObjects.Add(ball2);
+	worldObjects.Add(ball3);
+
 }

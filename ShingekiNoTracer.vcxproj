@@ -53,6 +53,7 @@
     <ClInclude Include="Headers\ShingekiNoTracer.h" />
     <ClInclude Include="Headers\Textures\CheckerTexture.h" />
     <ClInclude Include="Headers\Textures\ImageTexture.h" />
+    <ClInclude Include="Headers\Textures\RectChecker.h" />
     <ClInclude Include="Headers\Textures\Texture.h" />
     <ClInclude Include="Headers\Utility\Stopwatch.h" />
     <ClInclude Include="Headers\Utility\Utility.h" />

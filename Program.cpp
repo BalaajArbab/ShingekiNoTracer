@@ -33,7 +33,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 6;
+	const int scene = 2;
 
 	switch (scene)
 	{
@@ -63,12 +63,20 @@ int main()
 
 		break;
 	case 2:
-		Scene1(worldObjects);
+		CornellInvisWalls(worldObjects);
 
-		background = Colour{ 1, 1, 1 };
+		aspectRatio = 4.0 / 3.0;
+		imageHeight = 900;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
+		samplesPerPixel = 1000;
+		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
+		image.SetSamplesAsMultipleOfTheads();
 
-		lookFrom = Point3{ 13, 2, 3 };
-		lookAt = Point3{ 0, 0, 0 };
+		background = Colour{ 0, 0, 0 };
+		//background = Colour{ 1, 1, 1 };
+
+		lookFrom = Point3{ -700, 278, -850 };
+		lookAt = Point3{ -100, 278, 0 };
 		vFOV = 40.0;
 
 		break;
@@ -180,7 +188,7 @@ int main()
 		aspectRatio = 1.0;
 		imageHeight = 600;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 1000;
+		samplesPerPixel = 10;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
@@ -264,7 +272,7 @@ Colour rayColour(const Ray& r, const Colour& background, const Hittable& worldOb
 	if (depth <= 0) return Colour{};
 
 	// If the ray hits no object in the world, return background colour.
-	if (!worldObjects.Hit(r, 0.001, infinity, record, threadID))
+	if (!worldObjects.Hit(r, 0.001, infinity, record, threadID, depth))
 	{
 		if (gradientBackground)
 		{

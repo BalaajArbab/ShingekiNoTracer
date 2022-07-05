@@ -140,6 +140,9 @@
     <ClInclude Include="Headers\Materials\Isotropic.h">
       <Filter>Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Headers\Textures\RectChecker.h">
+      <Filter>Textures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
