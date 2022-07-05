@@ -1,44 +1,203 @@
 #ifndef FRACTAL_H
 #define FRACTAL_H
 
-#include <Renderer/Hittable.h>
+#include <vector>
+
+#include <Renderer/HittableList.h>
+#include <Shapes/Sphere.h>
 #include <Shapes/AARects.h>
-#include <Shapes/Translate.h>
-#include <Shapes/Rotations.h>
+#include <Materials/Lambertian.h>
+#include <Materials/DiffuseLight.h>
+#include <Textures/ImageTexture.h>
 
-// Not really fractals, at least in the end product/shape formed. But similar concept.
-
-inline void SemiFractalXY(HittableList& worldObjects, double p1, double p2, double q1, double q2, double initialPFactor, double initialQFactor, int depth, double z, shared_ptr<Material> mat)
+class DragonCurveGenerator
 {
-	if (depth != 0)
+private:
+	enum Direction
 	{
-		double pMid = fabs(p1 - p2) * initialPFactor;
-		double qMid = fabs(q1 - q2) * initialQFactor;
+		Up,
+		Down,
+		Left,
+		Right
+	};
 
-		SemiFractalXY(worldObjects, p1, p1 + pMid, q1, q1 + qMid, RandomDouble(0.2, 0.7), RandomDouble(0.2, 0.7), depth - 1, z, mat);
-		SemiFractalXY(worldObjects, p1, p1 + pMid, q1 + qMid, q2, RandomDouble(0.2, 0.7), RandomDouble(0.2, 0.7), depth - 1, z, mat);
-
-		SemiFractalXY(worldObjects, p1 + pMid, p2, q1, q1 + qMid, RandomDouble(0.2, 0.7), RandomDouble(0.2, 0.7), depth - 1, z, mat);
-		SemiFractalXY(worldObjects, p1 + pMid, p2, q1 + qMid, q2, RandomDouble(0.2, 0.7), RandomDouble(0.2, 0.7), depth - 1, z, mat);
-	}
-	else
+public:
+	DragonCurveGenerator(int iterations, HittableList& worldObjects)
+		: m_iterations{ iterations }
 	{
-		double rotate = sin(p1 * 33) + cos(p2 * 41) + sin(q1 * -35) + cos(q2 * -37);
-		rotate /= 4;
+		std::string moves{ "F" };
 
-		int rotateDegrees = RadiansToDegrees(asin(rotate)) / 2.5;
+		LSystem(iterations, moves);
 
-		double xMid = (p1 + p2) / 2.0;
-		double yMid = (q1 + q2) / 2.0;
+		Point3 point{ 0, 0, 0 };
+		Direction orientation = Up;
 
-		shared_ptr<Hittable> rect = make_shared<XYRect>(p1, p2, q1, q2, 0, mat);
-		rect = make_shared<Translate>(rect, Vector3{ -xMid, -yMid, 0 });
-		rect = make_shared<RotateX>(rect, rotateDegrees);
-		rect = make_shared<Translate>(rect, Vector3{ xMid, yMid, z });
+		m_points.reserve(5000);
+		m_points.push_back(point);
 
-		std::cout << rotateDegrees << "\n";
-		worldObjects.Add(rect);
+		int iteration = 0;
+		int pointCount = 1;
+		int lastIterPointCount{ };
+
+		for (char move : moves)
+		{
+			bool pointAdded = false;
+			switch (move)
+			{
+			case 'F':
+				point = Move(orientation, point, iteration);
+				m_points.push_back(point);
+				++pointCount;
+				pointAdded = true;
+
+				break;
+			case 'H':
+				point = Move(orientation, point, iteration);
+				m_points.push_back(point);
+				++pointCount;
+				pointAdded = true;
+
+				break;
+			case '-':
+				orientation = Turn(orientation, '-');
+
+				break;
+			case '+':
+				orientation = Turn(orientation, '+');
+
+				break;
+			}
+
+			if (pointAdded && pointCount == 2)
+			{
+				++iteration;
+				lastIterPointCount = 2;
+			}
+			else if (pointAdded && (pointCount == (lastIterPointCount + pow(2, iteration - 1))))
+			{
+				++iteration;
+				lastIterPointCount = pointCount;
+			}
+		}
+
+		auto chaosOrb = make_shared<ImageTexture>("images/chaos.png");
+		auto chaosOrbMat = make_shared<DiffuseLight>(chaosOrb);
+
+		auto eternalOrb = make_shared<ImageTexture>("images/eternal.png");
+		auto eternalOrbMat = make_shared<DiffuseLight>(eternalOrb);
+
+		for (auto& p : m_points)
+		{
+			shared_ptr<Material> mat;
+
+			if (p.Z() < 16) mat = chaosOrbMat;
+			else mat = eternalOrbMat;
+
+			auto pointRect = make_shared<XYRect>(p.X(), p.X() + 1, p.Y(), p.Y() + 1, 0, mat);
+
+			worldObjects.Add(pointRect);
+		}
+
+		std::cout << "Dragon Curve generated.\n";
 	}
-}
+	
+private:
+	std::vector<Point3> m_points;
+	int m_iterations;
+
+	static void LSystem(int iterations, std::string& str)
+	{
+		for (int i = 0; i < iterations; ++i)
+		{
+			std::string iterStr{ };
+
+			for (char c : str)
+			{
+				iterStr += Production(c);
+			}
+
+			str = iterStr;
+		}
+
+	}
+
+	static std::string Production(char c)
+	{
+		switch (c)
+		{
+		case 'F':
+			return "F-H";
+			break;
+		case 'H':
+			return "F+H";
+			break;
+		default:
+			return std::string{ c };
+			break;
+		}
+	}
+
+	static Direction Turn(Direction orientation, char turn)
+	{
+		switch (turn)
+		{
+		case '-':
+			switch (orientation)
+			{
+			case Up:
+				return Left;
+				break;
+			case Left:
+				return Down;
+				break;
+			case Down:
+				return Right;
+				break;
+			case Right:
+				return Up;
+				break;
+			}
+
+		case '+':
+			switch (orientation)
+			{
+			case Up:
+				return Right;
+				break;
+			case Left:
+				return Up;
+				break;
+			case Down:
+				return Left;
+				break;
+			case Right:
+				return Down;
+				break;
+			}
+		}
+
+	}
+
+	static Vector3 Move(Direction orientation, const Point3& point, double iteration)
+	{
+		switch (orientation)
+		{
+		case Up:
+			return Vector3{ point.X(), point.Y() + 1, iteration };
+			break;
+		case Down:
+			return Vector3{ point.X(), point.Y() - 1, iteration };
+			break;
+		case Left:
+			return Vector3{ point.X() - 1, point.Y(), iteration };
+			break;
+		case Right:
+			return Vector3{ point.X() + 1, point.Y(), iteration };
+			break;
+		}
+
+	}
+
+};
 
 #endif

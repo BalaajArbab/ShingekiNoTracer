@@ -1,3 +1,5 @@
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <Scenes.h>
 
 #include <Utility/Utility.h>
@@ -13,11 +15,12 @@
 #include <Shapes/Cylinder.h>
 #include <Shapes/Translate.h>
 #include <Shapes/Rotations.h>
-#include <Shapes/Fractal.h>
 #include <Shapes/ConstantMedium.h>
+#include <Shapes/Fractal.h>
 #include <Textures/CheckerTexture.h>
 #include <Textures/ImageTexture.h>
 #include <Textures/RectChecker.h>
+
 
 void RandomScene(HittableList& worldObjects)
 {
@@ -363,99 +366,8 @@ void Cornell(HittableList& worldObjects)
 	worldObjects.Add(oppositeWall);
 }
 
-void Sandbox(HittableList& worldObjects)
+void Aesthetic(HittableList& worldObjects)
 {
-	auto red = make_shared<Lambertian>(Colour{ 0.65, 0.05, 0.05 });
-	auto green = make_shared<Lambertian>(Colour{ 0.12, 0.45, 0.15 });
-	auto black = make_shared<Lambertian>(Colour{});
-	auto light = make_shared<DiffuseLight>(Colour{ 15, 15, 15 });
-
-	auto zebra = make_shared<HittableList>();
-
-	shared_ptr<Hittable> cylinderBody = make_shared<Cylinder>(0, 80, 15, red);
-	cylinderBody = make_shared<RotateY>(cylinderBody, 90);
-	cylinderBody = make_shared<Translate>(cylinderBody, Vector3{ -40, 15, 0 });
-
-	shared_ptr<Hittable> cylinderHindLeg1 = make_shared<Cylinder>(0, 50, 5, red);
-	cylinderHindLeg1 = make_shared<RotateX>(cylinderHindLeg1, 90);
-	cylinderHindLeg1 = make_shared<Translate>(cylinderHindLeg1, Vector3{ -30, 20, 10 });
-
-	shared_ptr<Hittable> cylinderHindLeg2 = make_shared<Cylinder>(0, 50, 5, red);
-	cylinderHindLeg2 = make_shared<RotateX>(cylinderHindLeg2, 90);
-	cylinderHindLeg2 = make_shared<Translate>(cylinderHindLeg2, Vector3{ -30, 20, -10 });
-
-	shared_ptr<Hittable> cylinderFrontLeg1 = make_shared<Cylinder>(0, 50, 5, red);
-	cylinderFrontLeg1 = make_shared<RotateX>(cylinderFrontLeg1, 90);
-	cylinderFrontLeg1 = make_shared<Translate>(cylinderFrontLeg1, Vector3{ 30, 20, 10 });
-
-	shared_ptr<Hittable> cylinderFrontLeg2 = make_shared<Cylinder>(0, 50, 5, red);
-	cylinderFrontLeg2 = make_shared<RotateX>(cylinderFrontLeg2, 90);
-	cylinderFrontLeg2 = make_shared<Translate>(cylinderFrontLeg2, Vector3{ 30, 20, -10 });
-
-	shared_ptr<Hittable> behindRump = make_shared<Sphere>(Point3{ -26, 15, 0 }, 20.5, red);
-	shared_ptr<Hittable> frontRump = make_shared<Sphere>(Point3{ 30, 15, 0 }, 18.2, red);
-	shared_ptr<Hittable> belly = make_shared<Sphere>(Point3{ 4, 13.2, 0 }, 16.9, red);
-
-	shared_ptr<Hittable> tailOne = make_shared<Sphere>(Point3{ -52, 15, 0 }, 7, black);
-	shared_ptr<Hittable> tailTwo = make_shared<Sphere>(Point3{ -52, 4.5, 0 }, 5, black);
-	shared_ptr<Hittable> tailThree = make_shared<Sphere>(Point3{ -52, -3, 0 }, 4, black);
-	shared_ptr<Hittable> tailFour = make_shared<Sphere>(Point3{ -52, -9, 0 }, 3, black);
-	shared_ptr<Hittable> tailFive = make_shared<Sphere>(Point3{ -52, -13.5, 0 }, 2, black);
-	shared_ptr<Hittable> tailSix = make_shared<Sphere>(Point3{ -52, -17.5, 0 }, 2, black);
-	shared_ptr<Hittable> tailSeven = make_shared<Sphere>(Point3{ -52, -20.5, 0 }, 1, black);
-
-	shared_ptr<Hittable> cylinderNeck = make_shared<Cylinder>(0, 20, 6, red);
-	cylinderNeck = make_shared<RotateX>(cylinderNeck, 90);
-	cylinderNeck = make_shared<RotateZ>(cylinderNeck, -45);
-	cylinderNeck = make_shared<Translate>(cylinderNeck, Vector3{ 50, 40, 0 });
-
-	shared_ptr<Hittable> face = make_shared<Sphere>(Point3{ 52, 43, 0 }, 7, red);
-	shared_ptr<Hittable> eye1 = make_shared<Sphere>(Point3{ 56, 45, 5 }, 1, black);
-	shared_ptr<Hittable> eye2 = make_shared<Sphere>(Point3{ 56, 45, -5 }, 1, black);
-
-
-	shared_ptr<Hittable> snout = make_shared<Cylinder>(0, 10, 2.5, red);
-	snout = make_shared<RotateX>(snout, 90);
-	snout = make_shared<RotateZ>(snout, 45);
-	snout = make_shared<Translate>(snout, Vector3{ 56, 41, 0 });
-
-	shared_ptr<Hittable> hairOne = make_shared<Sphere>(Point3{ 48, 49, 0 }, 4, black);
-	shared_ptr<Hittable> hairTwo = make_shared<Sphere>(Point3{ 45, 46, 0 }, 3, black);
-	shared_ptr<Hittable> hairThree = make_shared<Sphere>(Point3{ 42, 43, 0 }, 3, black);
-	shared_ptr<Hittable> hairFour = make_shared<Sphere>(Point3{ 39, 40, 0 }, 3, black);
-	shared_ptr<Hittable> hairFive = make_shared<Sphere>(Point3{ 36, 37, 0 }, 3, black);
-	shared_ptr<Hittable> hairSix = make_shared<Sphere>(Point3{ 34, 35, 0 }, 2, black);
-
-	worldObjects.Add(make_shared<XZRect>(-40, 40, -40, 40, 70, light));
-
-	zebra->Add(cylinderBody);
-	zebra->Add(cylinderHindLeg1);
-	zebra->Add(cylinderHindLeg2);
-	zebra->Add(cylinderFrontLeg1);
-	zebra->Add(cylinderFrontLeg2);
-	zebra->Add(behindRump);
-	zebra->Add(frontRump);
-	zebra->Add(belly);
-	zebra->Add(tailOne);
-	zebra->Add(tailTwo);
-	zebra->Add(tailThree);
-	zebra->Add(tailFour);
-	zebra->Add(tailFive);
-	zebra->Add(tailSix);
-	zebra->Add(tailSeven);
-	zebra->Add(cylinderNeck);
-	zebra->Add(face);
-	zebra->Add(eye1);
-	zebra->Add(eye2);
-	zebra->Add(snout);
-	zebra->Add(hairOne);
-	zebra->Add(hairTwo);
-	zebra->Add(hairThree);
-	zebra->Add(hairFour);
-	zebra->Add(hairFive);
-	zebra->Add(hairSix);
-
-	worldObjects.Add(zebra);
 
 }
 
@@ -588,12 +500,15 @@ void KekWorld(HittableList& worldObjects)
 	
 }
 
-void ChaosTheory(HittableList& worldObjects)
+void DragonCurve(HittableList& worldObjects)
 {
-	//auto material = make_shared<Lambertian>(Colour{ 0.5, 0.8, 0.2 });
-	auto material = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
+	auto background = make_shared<ImageTexture>("images/TwilightStrand.jpg");
+	auto backgroundMat = make_shared<Skybox>(background);
+	auto backgroundRect = make_shared<XYRect>(-3000, 3000, -3000, 3000, -1500, backgroundMat);
 
-	SemiFractalXY(worldObjects, -500, 500, -500, 500, 0.2, 0.7, 4, -400, material);
+	DragonCurveGenerator dragonCurve{ 16, worldObjects };
+
+	worldObjects.Add(backgroundRect);
 }
 
 void CornellSmoke(HittableList& worldObjects)

@@ -33,7 +33,7 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 2;
+	const int scene = 8;
 
 	switch (scene)
 	{
@@ -114,7 +114,7 @@ int main()
 
 		break;
 	case 5:
-		Sandbox(worldObjects);
+		Aesthetic(worldObjects);
 
 		lookFrom = Point3{ 60, 40, 40 }; // from zebras top right
 		/*lookFrom = Point3{ 0, 0, 80 }; */// side/bodysection
@@ -164,24 +164,23 @@ int main()
 
 		break;
 	case 8:
-		ChaosTheory(worldObjects);
+		DragonCurve(worldObjects);
 
-		aspectRatio = 16.0 / 9.0;
-		imageHeight = 600;
+		aspectRatio = 1.0;
+		imageHeight = 9001;
 		imageWidth = static_cast<int>(imageHeight * aspectRatio);
-		samplesPerPixel = 100;
+		samplesPerPixel = 1;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
-		background = { 0.9, 0.2, 0.9 };
-		gradientBackground = true;
+		background = { 0, 0, 0 };
+		gradientBackground = false;
 
-		lookFrom = Point3{ 0, 0, 20 };
-		lookAt = Point3{ 0, 0, 0 };
-		vFOV = 120.0;
+		lookFrom = Point3{ 50, 100, 120 };
+		lookAt = Point3{ 50, 100, 0 };
+		vFOV = 123.0;
 
 		break;
-	
 	case 9:
 		CornellSmoke(worldObjects);
 		aspectRatio = 1.0;

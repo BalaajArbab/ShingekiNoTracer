@@ -1,7 +1,7 @@
 # ShingekiNoTracer
 A RayTracer. 
 
-Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refraction, UV Texture Mapping, Volumes(Fog/Mist Subsurface Scattering), Invisible Walls.
+Implements Basic Primitive Shapes, Translations, Rotations, Reflection, Refraction, UV Texture Mapping, Volumes(Fog/Mist Subsurface Scattering), Invisible Walls, The Dragon Curve Fractal.
 
 Utilizes a BSP-tree hierarchy as an efficiency data structure, and CPU Multithreading. 
 
@@ -25,4 +25,5 @@ CS3388 - Computer Graphics at Western University
 
 ![space](Renders/SpaceSphereNonMove.png)
 ![spherical](Renders/SpaceSpheresMove.gif)
+![Dragon Curve](Renders/DragonCurve.png)
 ![rumbling](Renders/Sasageyo.png)
