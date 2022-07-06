@@ -15,7 +15,7 @@ int main()
 
 	// Image
 	double aspectRatio = 16.0 / 9.0;
-	int imageHeight = 600;
+	int imageHeight = 1080;
 	int imageWidth = static_cast<int>(imageHeight * aspectRatio);
 	int samplesPerPixel = 100; // Keep this an even multiple of g_THREAD_COUNT
 	int maxDepth = 50;
@@ -33,7 +33,10 @@ int main()
 	Point3 lookAt{ 0, 0, 0 };
 	double vFOV = 90.0;
 
-	const int scene = 3;
+	const int scene = 5;
+
+	shared_ptr<Skybox> badAppleMat;
+	shared_ptr<Skybox> badAppleBackground = make_shared<Skybox>(Colour{ 1.0, 1.0, 1.0 });
 
 	switch (scene)
 	{
@@ -115,17 +118,20 @@ int main()
 
 		break;
 	case 5:
-		Aesthetic(worldObjects);
+		badAppleMat = BadApple(worldObjects, badAppleBackground);
 
-		lookFrom = Point3{ 60, 40, 40 };	
-		lookAt = Point3{ 10, 0, 0 };
-		vFOV = 120.0;
-
+		aspectRatio = 4.0/3.0;
+		imageHeight = 480;
+		imageWidth = static_cast<int>(imageHeight * aspectRatio);
 		samplesPerPixel = 10;
 		image = Image{ aspectRatio, imageHeight, imageWidth, samplesPerPixel, maxDepth };
 		image.SetSamplesAsMultipleOfTheads();
 
-		background = Colour{ 0.1, 0.1, 0.1 };
+		lookFrom = Point3{ 0, 0, 15 };	
+		lookAt = Point3{ 0, 0, 0 };
+		vFOV = 90.0;
+
+		background = Colour{ 1.0, 1.0, 1.0 };
 
 		break;
 	case 6:
@@ -208,11 +214,11 @@ int main()
 
 	//double distToFocusPlane = (lookFrom - lookAt).Magnitude();
 
-	//Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, 0 };
+	Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, 0 };
 	
 
 	// Render
-	int frameCount = 1;
+	int frameCount = 6569;
 	double angleIncrement = 360 / frameCount;
 
 	Stopwatch sw;
@@ -222,10 +228,31 @@ int main()
 
 	for (int frame = 1; frame <= frameCount; frame++)
 	{
-		std::string filename{ "picture" };
-		filename.append(std::to_string(frame)).append(".bmp");
+		std::ostringstream ss;
+		ss << std::setw(5) << std::setfill('0') << frame;
+		std::string frameString{ "frames/frame" };
+		frameString += ss.str() += ".jpg";
 
-		Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, angleIncrement * (frame - 1)};
+		std::cout << "frame: " << frameString << '\n';
+
+		badAppleMat->SetTexture(frameString);
+
+		std::ostringstream bckss;
+		int bckNumber = frame % 320;
+		bckNumber = (bckNumber == 0) ? 1 : bckNumber;
+		bckss << std::setw(3) << std::setfill('0') << bckNumber;
+		std::string bckString{ "harm/bck" };
+		bckString += bckss.str() += ".png";
+
+		std::cout << "bck: " << bckString << '\n';
+
+		badAppleBackground->SetTexture(bckString);
+
+		//std::string filename{ "picture" };
+		std::string filename{ "BadApple/frame" };
+		filename.append(std::to_string(frame)).append(".jpg");
+
+		//Camera camera{ lookFrom, lookAt, vUp, vFOV, image.AspectRatio, aperture, distToFocusPlane, angleIncrement * (frame - 1)};
 
 		PixelBuffer pixelBuffers[g_THREAD_COUNT];
 
@@ -245,7 +272,7 @@ int main()
 
 		consolidatedPB.AveragePixelBuffers(pixelBuffers, g_THREAD_COUNT, image.SamplesPerPixel);
 
-		std::cout << "\nimage write for " << filename << ": " << stbi_write_bmp(filename.data(), image.ImageWidth, image.ImageHeight, 3, consolidatedPB.Data()) << '\n' << '\n';
+		std::cout << "\nimage write for " << filename << ": " << stbi_write_jpg(filename.data(), image.ImageWidth, image.ImageHeight, 3, consolidatedPB.Data(), 90) << '\n' << '\n';
 
 		for (auto& pb : pixelBuffers) pb.Clear();
 	}

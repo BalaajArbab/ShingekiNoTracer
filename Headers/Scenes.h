@@ -2,12 +2,15 @@
 #define SCENES_H
 
 #include <Renderer/HittableList.h>
+#include <Materials/Material.h>
+#include <Materials/Skybox.h>
+
 
 void RandomScene(HittableList& worldObjects);
 void RandomSceneLights(HittableList& worldObjects);
 void Zebra(HittableList& worldObjects);
 void Cornell(HittableList& worldObjects);
-void Aesthetic(HittableList& worldObjects);
+shared_ptr<Skybox> BadApple(HittableList& worldObjects, shared_ptr<Material> bckground);
 void Sasageyo(HittableList& worldObjects);
 void KekWorld(HittableList& worldObjects);
 void DragonCurve(HittableList& worldObjects);

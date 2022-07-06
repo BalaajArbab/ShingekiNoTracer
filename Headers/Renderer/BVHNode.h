@@ -10,11 +10,11 @@ class BVHNode : public Hittable
 public:
 	BVHNode() = default;
 
-	BVHNode(const HittableList& list)
+	BVHNode(HittableList& list)
 		: BVHNode(list.GetList(), 0, list.GetList().size())
 	{}
 
-	BVHNode(const std::vector<shared_ptr<Hittable>>& srcObjects, size_t start, size_t end);
+	BVHNode(std::vector<shared_ptr<Hittable>>& srcObjects, size_t start, size_t end);
 
 	virtual bool Hit(const Ray& r, double tMin, double tMax, HitRecord& record, int id, int depth) const override;
 
@@ -27,9 +27,9 @@ private:
 
 };
 
-inline BVHNode::BVHNode(const std::vector<shared_ptr<Hittable>>& srcObjects, size_t start, size_t end)
+inline BVHNode::BVHNode(std::vector<shared_ptr<Hittable>>& objects, size_t start, size_t end)
 {
-	auto objects = srcObjects; // Create a modifiable list of the source scene objects.
+	//auto objects = srcObjects; // Create a modifiable list of the source scene objects.
 
 	int axis = RandomInteger(0, 2);
 

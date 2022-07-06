@@ -5,6 +5,7 @@
 #include <Renderer/Hittable.h>
 #include <Materials/Material.h>
 #include <Textures/Texture.h>
+#include <Textures/ImageTexture.h>
 
 
 class Skybox : public Material
@@ -30,6 +31,11 @@ public:
 	virtual Colour Emitted(double u, double v, Point3& p) const override
 	{
 		return m_reflectanceTexture->Value(u, v, p);
+	}
+
+	void SetTexture(const std::string& newTexture)
+	{
+		m_reflectanceTexture = make_shared<ImageTexture>(newTexture.data());
 	}
 
 

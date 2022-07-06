@@ -353,9 +353,52 @@ void Cornell(HittableList& worldObjects)
 	worldObjects.Add(oppositeWall);
 }
 
-void Aesthetic(HittableList& worldObjects)
+shared_ptr<Skybox> BadApple(HittableList& worldObjects, shared_ptr<Material> bckground)
 {
+	auto ballMat = make_shared<Metal>(Colour{ 1.0, 1.0, 1.0 }, 0.0);
 
+	auto badAppleMat = make_shared<Skybox>(Colour{ 1, 1, 1 });
+	auto badAppleRect = make_shared<XYRect>(-240, 239, -180, 179, -80, badAppleMat);
+	badAppleRect->MakeInvisible();
+
+	worldObjects.Add(badAppleRect);
+
+
+	// Skybox
+	auto skyboxObjects = make_shared<HittableList>();
+
+	auto xyRect1 = make_shared<XYRect>(-3000, 3000, -2000, 2000, -2000, bckground);
+	auto xyRect2 = make_shared<XYRect>(-3000, 3000, -2000, 2000, 2000, bckground);
+
+	auto yzRect1 = make_shared<YZRect>(-2000, 2000, -2000, 2000, -3000, bckground);
+	auto yzRect2 = make_shared<YZRect>(-2000, 2000, -2000, 2000, 3000, bckground);
+
+	auto xzRect1 = make_shared<XZRect>(-3000, 3000, -2000, 2000, 2000, bckground);
+	auto xzRect2 = make_shared<XZRect>(-3000, 3000, -2000, 2000, -2000, bckground);
+
+	skyboxObjects->Add(xyRect1);
+	skyboxObjects->Add(xyRect2);
+	skyboxObjects->Add(yzRect1);
+	skyboxObjects->Add(yzRect2);
+	skyboxObjects->Add(xzRect1);
+	skyboxObjects->Add(xzRect2);
+
+	auto metalMat = make_shared<Metal>(Colour{ 0.73, 0.73, 0.73 }, 0.0);
+
+	int balls = 8;
+
+	for (int i = 0; i < balls; ++i)
+	{
+		shared_ptr<Hittable> sphere = make_shared<Sphere>(Point3{ -210, 0, -250 }, 50, ballMat);
+		sphere = make_shared<RotateZ>(sphere, i * (360 / balls));
+
+		worldObjects.Add(sphere);
+	}
+
+	worldObjects.Add(skyboxObjects);
+	worldObjects.Add(make_shared<Sphere>(Point3{ 0, 0, -250 }, 110, ballMat));
+
+	return badAppleMat;
 }
 
 void Sasageyo(HittableList& worldObjects)

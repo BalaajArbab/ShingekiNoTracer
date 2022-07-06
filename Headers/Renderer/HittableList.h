@@ -30,7 +30,7 @@ public:
 		m_objects.resize(0);
 	}
 
-	const std::vector<shared_ptr<Hittable>>& GetList() const
+	std::vector<shared_ptr<Hittable>>& GetList() 
 	{
 		return m_objects;
 	}
